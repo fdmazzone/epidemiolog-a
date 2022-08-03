@@ -1,0 +1,418 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{color}
+\usepackage{systeme}
+\usepackage[utf8]{inputenc}
+\usepackage{empheq}
+\usepackage{bbm}
+ 
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{rem}[thm]{Remark}
+\newtheorem{exa}[thm]{Example}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{prop}[thm]{Proposition}
+\theoremstyle{remark}
+\newtheorem{comentario}{Remark}
+
+%opening
+\title{Optimal control on a vaccine metapopulation SIR model}
+\author{
+}
+
+
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+
+\end{abstract}
+
+
+\section{Introduction}
+\begin{figure}
+    \centering
+    \includegraphics{prueba2.png}
+    \caption{Caption}
+    \label{fig:my_label}
+\end{figure}
+
+
+
+We consider the following SIR model of metapopulations with migrations:
+\begin{equation}
+\left\{\begin{array}{l}\frac{d S_{i}}{d t}=\mu N_{i}-S_{i}(t) \sum_{j=1}^{n} \beta_{i j} I_{j}(t)-\delta \sigma_{i} S_{i}(t)-d S_{i}(t) \\ 
+\frac{d I_{i}}{d t}=S_{i}(t) \sum_{j=1}^{n} \beta_{i j} I_{j}(t)-(d+\alpha+\gamma) I_{i}(t) \\ 
+\frac{d R_{i}}{d t}=\gamma I_{i}(t)+\delta \sigma_{i} S_{i}(t)-d R_{i}(t)\\
+S(0)=S_{i 0};\quad I_{i}(0)=I_{i 0};\quad R_{i}(0)=R_{i 0}
+\end{array}\right. 
+\end{equation}
+where 
+\begin{itemize}
+\item $\beta_{ij}$ is the transmission rate per capita per time unit of individuals of the class $i$ with the class $j$.
+\item $\mu$ is the birth rate. 
+\item $\sigma_{i}$ is the vaccination rate at the node $i$ (control variable).
+\item $\gamma$ is the recovery rate. 
+\item $d$ is the natural death rate. 
+\item $\alpha$ is the death rate from the disease (case fatality). 
+\item $\delta$ is the vaccine effectiveness.
+\end{itemize}
+
+\def\svgwidth{9cm}
+\input{SIR_vacuna.pdf_tex}
+
+We suupose that $\sigma_{T}:[0,T]\to\mathbb{R}_+$ is a non-negative function. We consider the admissible control set
+\[U_{ad}=\left\{\sigma=\left(\sigma_{1}, \ldots, \sigma_{n}\right): \sigma_{i}\right.\text{ measurable }, \left.\sigma_{i} \geqslant 0, \sigma_{1}+\cdots+\sigma_{n}=\sigma_{T}(t)\right\}\]
+
+\begin{color}{red} Nota 26/07/2022: 
+
+$\sigma_i = $\# Vacunados nodo  $i$ $\times $ unidad de tiempo $\times $ suceptible del nodo $i$. 
+
+La cantidad total de vacunas suministradas en el nodo $i$ es $\sigma_iS_i$. Estamos considerando igual de admisibles distribuciones de vacunas que en total pueden resultar en cantidades de vacunados muy diferentes. Parece más razonable que el conjunto admisible sea algo del tipo:
+\[ \sigma_{1}S_1+\cdots+\sigma_{n}S_n\leq \sigma_{T}(t)\]
+
+Ahora $\sigma_T(t)$ representan cantidad de vacunas por unidad de tiempo en la población total. Quizás que la cantidad de vacunados no se exprese como $\sigma_i S_i$. Discutir un poco esto.
+
+\end{color}
+
+The objective function given by
+\[ J(\sigma)=\int_{0}^{T} \sum_{i=1}^{n} I_{i}(t) d t\]
+we formulate the optimal control problem 
+\begin{equation}\label{OptimalProblem}
+\text{find}\quad \sigma^{*} \in U_{a d} \quad \text{such that}\quad 
+          J\left(\sigma^{*}\right)=\min _{\sigma\in  U_{a d}} J(\sigma)
+\end{equation}
+
+\section{Some observations on dynamics of vaccine metapopulation model}
+
+
+
+We assume $\mu=d=\alpha=0$ and $\delta=1$. In this situation $N_i':=(S_i+I_i+R_i)'=0$, i.e. the total population of node $i$ remain constant. Cosequently $R_i=N-S_i-I_i$ and  we can drop the equation for $R_i$  of the system. Therefore, we can study the SIR metapopulation model with vaccination (SIRmv) system.
+
+  \begin{empheq}[left=\empheqlbrace]{align}
+ S'_{i} &= -S_{i}(t) \sum\limits_{j=1}^{n} \beta_{i j} I_{j}(t)-  \sigma_{i}(t) S_{i}(t)\label{eq:SIRmv1}\tag{SIRmv1}\\
+ I'_{i}&=S_{i}(t) \sum\limits_{j=1}^{n} \beta_{i j} I_{j}(t)-\gamma I_{i}(t)
+ \label{eq:SIRmv2}\tag{SIRmv2}
+  \end{empheq}
+
+  
+We  note that the system of equations \eqref{eq:SIRmv1}, \eqref{eq:SIRmv1} possibly has a discontinuous right hand side. I this case,  I this case, following to \cite{A.F.Filippov512}. \textcolor{red}{Poner el significado de solución}
+  
+
+
+
+We will use the following well known and elementary formula for the solution of a linear scalar eqution of first order $x'(t)+p(t)x(t)=q(t)$:
+\begin{equation}\label{eq:1order}
+ x(t)=e^{-\int_0^tp(s)ds}\left\{x(0)+\int_0^t e^{\int_0^sp(r)dr}q(s) ds \right\}
+\end{equation}
+
+From  \eqref{eq:SIRmv1} and \eqref{eq:1order} we obtain that
+
+\[
+ S_i(t)=S_i(0)
+ \exp\left(
+    -\int_0^t\sum\limits_{j=1}^{n} \beta_{i j} I_{j}(s)+\sigma(s)ds
+    \right)
+\]
+
+
+
+The following conjecture establish that if is a irreducible matrix (see \cite{CarlD.Meyer538}) the epidemic is transmitted from any node to the rest with infinite speed.
+
+
+\begin{prop} Suppose that $\beta$ is a irreducible matrix. If there exists $i$ such that $I_i(0)>0$ then for evey $j$ and $t>0$ we have $I_j(t)>0$.
+ 
+\end{prop}
+ 
+\begin{proof} Agregar
+ +
+\end{proof}
+
+\begin{lem}\label{lem:lim-weak} Let $h\in L^{\infty}([0,+\infty))$ be a function. Suppose that there exists  $\lim_{t\to\infty}h(t)$ and denote it by $h_{\infty}$. Then
+\begin{equation}\label{eq:lim-weak}
+ h_{\infty}=\lim_{t\to\infty}\gamma\int_0^th(s)e^{\gamma (s-t)}ds.
+\end{equation}
+\end{lem}
+\begin{proof} Given $\varepsilon>0$ there exists $t_0\geq 0$ such that 
+\[
+ t\geq t_0\Rightarrow |h(t)-h_{\infty}|<\varepsilon.
+\]
+Using the identity
+\[
+ \gamma\int_0^te^{\gamma (s-t)}ds=1-e^{-\gamma t},
+\]
+we can deduce
+
+ \begin{multline*}
+  \left|h_{\infty}-\gamma\int_0^th(s)e^{\gamma (s-t)}ds\right|=
+  \left|e^{-\gamma t}h_{\infty}+ \gamma\int_0^t\left(h_{\infty}-h(s)\right)e^{\gamma (s-t)}ds \right|\\
+  \leq e^{-\gamma t}|h_{\infty}|+  \gamma\int_0^{t_0} \left|h_{\infty}-h(s)\right| e^{\gamma (s-t)}ds +\gamma\int_{t_0}^{t} \left|h_{\infty}-h(s)\right| e^{\gamma (s-t)}ds\\
+  e^{-\gamma t}|h_{\infty}|+2\gamma\|h\|_{L^{\infty}}e^{\gamma(t_0-t)}t_0+\varepsilon.
+ \end{multline*}
+This inequality implies the result in lemma.
+\end{proof}
+
+\begin{comentario} Of course, the existence of the limit on the right hand side in equation \eqref{eq:lim-weak}   does not guarantee the existence of limit of $h(t)$ for $t\to\infty$. An example of this fact is obtained as follow. Let 
+\[
+ h=\sum_{n=0}^{\infty}\mathbbm{1}_{[n,n+\frac12]},
+\]
+where $\mathbbm{1}_{A}$ denotes the characteristic function of the set $A$.  Then $h(s)+h(s-\frac12)=1$, for $s\in [0,+\infty]$. 
+We define $\varphi(s)=h(e^s-1)$. Then
+\begin{multline}\label{eq:sum_1}
+ 1=\lim\limits_{t\to\infty}\gamma\int_0^t \left(\varphi(s)+\varphi\left(s-\frac12\right)
+ \right) e^{\gamma (s-t)}ds\\=\lim\limits_{t\to\infty}\gamma\int_0^t\varphi(s)e^{\gamma (s-t)}ds+ \gamma\int_0^t \varphi\left(s-\frac12\right)
+  e^{\gamma (s-t)}ds
+\end{multline}
+On the other hand
+\begin{multline}\label{eq:tras_12}
+ \gamma\int_0^t \varphi\left(s-\frac12\right)
+  e^{\gamma (s-t)}ds= \gamma e^{\frac{\gamma}{2}}\int_0^{t-\frac12} \varphi\left(r\right)
+  e^{\gamma (r-t)}dr\\=\gamma e^{\frac{\gamma}{2}}\int_0^{t} \varphi\left(r\right)
+  e^{\gamma (r-t)}dr-
+  \gamma e^{\frac{\gamma}{2}}\int_{t-\frac12}^{t} \varphi\left(r\right)
+  e^{\gamma (r-t)}dr
+\end{multline}
+
+In my understanding
+\[
+\lim\limits_{t\to\infty} \int_{t-\frac12}^{t} \varphi\left(r\right)
+  e^{\gamma (r-t)}dr= \frac{1}{2\gamma}(1-e^{-\gamma/2}).
+\]
+
+Taking account of \eqref{eq:sum_1}, \eqref{eq:tras_12} we infer that 
+\[
+\lim\limits_{t\to\infty} \gamma \int_{0}^{t} \varphi\left(s\right)
+  e^{\gamma (s-t)}ds=\frac{e^{\gamma/2}}{2(1+e^{\gamma/2})}
+\]
+
+
+\end{comentario}
+
+The following proposition to expresses the fact that epidemic is extinguished when $t\to\infty$ and, in certain sense, the total quantity of applied vaccines $\sigma_iS_i$ goes to zero when $t\to\infty$.   
+
+\begin{prop} 
+\[
+ \lim\limits_{t\to\infty}\gamma\int_0^t \sigma_i(s)S_i(s)
+  e^{\gamma (s-t)}ds=I_i(\infty)=0.
+\]
+
+ 
+\end{prop}
+
+\begin{proof} Adding equations \eqref{eq:SIRmv1} and \eqref{eq:SIRmv2} we obtain 
+\[
+ (S_i+I_i)'=-\sigma_iS_i-\gamma I_i\leq 0.
+\]
+Therefore  $S_i+I_i$ is a monotone non increasing function. Hence $\lim_{t\to\infty} (S_i+I_i)$ there exists. From \eqref{eq:SIRmv1} the same considerations are true for function $S_i$. Consequently there exists $\lim_{t\to\infty} S_i(t)=:S_i(\infty)$. We deduce that there exists  $\lim_{t\to\infty} I_i(t)=:I_i(\infty)$. If $I(\infty)>0$, we could choose $t_0$ large enough for that $t\geq t_0$ implies $I_i(t)>I_i(\infty)/2=:a>0$. Then $(S_i(t)+I_i(t))'\leq -\gamma I_i(t)\leq -\gamma a$. This inequality implies that $S_i(t) +I_i(t)\to -\infty$, when $t\to\infty$, which is a contradiction. Consequently $I_i(\infty)=0$. 
+
+ 
+From  \eqref{eq:SIRmv2} and \eqref{eq:1order} we obtain that
+
+
+\[
+\begin{split}
+ I_i(t)&=e^{-\gamma t}
+ \left\{
+    I_i(0)+\int_0^t e^{\gamma s} S_{i}(s) \sum\limits_{j=1}^{n} \beta_{i j} I_{j}(s)ds
+\right\}\\
+&= e^{-\gamma t}
+ \left\{
+    I_i(0)-\int_0^t e^{\gamma s} \left[S'_i(s)+\sigma_i(s)S_i\right]ds 
+  \right\}\\
+  &= e^{-\gamma t}
+ \left\{
+    I_i(0)-\int_0^t e^{\gamma s}  \sigma_i(s)S_i(s)ds
+    -e^{\gamma t}S_i(t)+S_i(0)-\gamma\int_0^t e^{\gamma s} S_{i}(s) ds 
+  \right\}\\
+   &= e^{-\gamma t}\left(S_i(0)+ I_i(0)  \right)-S_i(t)
+   +\gamma \int_0^t e^{\gamma (s-t)}S_{i}(s)ds-\int_0^t e^{\gamma s}  \sigma_i(s)S_i(s)ds
+ \end{split}
+\]
+
+Taking the limit for $t\to\infty$ in previous identities and using Lemma \ref{lem:lim-weak} 
+\end{proof}
+
+
+\begin{conj} 
+ \[
+ \lim\limits_{t\to\infty} \sigma_i(s)S_i(s)
+=0.
+\]
+
+\end{conj}
+
+
+\section{Existence minimizers}
+
+In this Section, we prove that the optimal control problem (\ref{OptimalProblem}) has a solution. That is,  we prove that the hypothesis of the Filippov-Cesari Theorem are satisfied (see \cite{A.Seierstad499}). In what follows, we will use the following notation
+$$
+x=\left(S_{1}, \ldots, S_{n}, I_{1}, \ldots, I_{n}, R_{1},\ldots, R_{n}\right)
+$$
+\[f_{0}\left(x_{i}, \sigma_{i}, t\right)=f_{0}\left(S_{1}, \ldots, S_{1}, I_{1}\ldots, I_n, R_{1}, \cdots, R_{n} ; \sigma_{1}, \cdots, \sigma_{n} ; t\right)=\sum_{i=1}^{n} I_{i}(t).\]
+For $i=1,2,\cdots, n$, we denote by
+$$
+f_{i}=\left(f_{0 i}, f_{2 i}, f_{3 i}\right), \quad  f=\left(f_{1}, \ldots, f_{n}\right) 
+$$
+with
+\[f_{1 i}=\mu N_{i}-S_{i}(t) \sum_{j=1}^{n} \beta_{i} I_{j}(t)-\delta \sigma_{i} S_{i}(t)-d S_{i}(t)\]
+\[f_{2i}=S_{i}(t) \sum_{j=1}^{n} \beta_{i} I_{j}(t)-(d+\alpha+\gamma) I_{i}(t)\]
+\[f_{3 i}=\gamma I_{i}(t)+\delta \sigma_{i} S_{i}(t)-d R_{i}(t)\]
+and we define
+$$N\left(x, U_{a d}, t\right)=\left\{\left(f_{0}+\gamma, f\right):\, \gamma \leqslant 0,\, \sigma \in U_{a d}\right\}.$$
+Now, we will are in conditions to prove the following result.
+
+\begin{thm}
+The optimal control problem (\ref{OptimalProblem}) has a solution $\sigma^{*} \in U_{ad}$.
+\end{thm}
+\begin{proof}
+We will see that $N(x, U_{a d}, t)$ is a convex set, for every $(x,t)$. 
+
+Let 
+$\left(a_{1}, b_{1}\right), \left(a_{2}, b_{2}\right) \in N\left(x, U_{a d}, t\right)$ be, then  there exist $\gamma_{1}, r_{2} \leq 0$ and $\sigma_{1}, \sigma_2 \in  U_{a d}$ such that 
+$$
+\left(f_{0}\left(x, y_{1}, t\right)+\gamma_{1} ; f\left(x, \sigma_{2}, t\right)\right)=\left(a_{1}, b_{1}\right) 
+$$
+and
+$$
+\left(f_{0}\left(x, \sigma_{2}, t\right)+\gamma_{2}, f\left(x, \sigma_{2}, t\right)\right)=\left(a_{2}, b_{2}\right)
+$$
+then 
+$$
+\lambda\left(a_{1}, b_{1}\right)+(1-\lambda)\left(a_{2}, b_{2}\right)=\left(\lambda a_1+(1-\lambda) a_{2}, \lambda b_{1}+(1-\lambda) b_{2}\right)
+$$
+$$
+=\left(\lambda\left(f_{0}\left(x, \sigma_{1}, t\right)+\gamma_{1}\right)+(1-\lambda)\left(f_{0}\left(x_{1}, \sigma_{2}, t\right)+r_{2}\right), \lambda f\left(x_{1}, r_{1}, t\right)+(1-\lambda) f\left(x_{1} \sigma_{2}, t\right)\right).
+$$
+Now, we consider the second component
+$$
+\lambda f\left(x, \sigma_{1}, t\right)+(j-\lambda) f\left(x, \sigma_{2}, t\right)
+$$
+and from the linearity of $f$ with respect $\sigma$, we have 
+\[\lambda f\left(x, \sigma_{1}, t\right)+(1-\lambda) f\left(x, \sigma_{2}, t\right)=f\left(x, \lambda \sigma_{1}+(1-\lambda) \sigma_{2}, t\right)\]
+Moreover, $\overline{\sigma}=\lambda \sigma_{1}+(1-\lambda) \sigma_{2} \in U_{ad}$. In fact, $\lambda \sigma_{1}+(1-\lambda) \sigma_{2}$ is measurable, $\lambda \sigma_{1}+(1-\lambda) \sigma_{2} \geqslant 0$ and if we consider
+$\sigma_{1}=\left(\sigma_{11}, \ldots \ldots, \sigma_{1 n}\right)$ and $ \sigma_{2}=\left(\sigma_{21} \ldots \ldots \sigma_{2 n}\right)$ in $U_{ad}$, then we have
+$$
+\begin{array}{l}
+\lambda \sigma_{1}+(1-\lambda) \sigma_{2}=\left(\lambda \sigma_{11}+(1-\lambda) \sigma_{21}, \ldots \lambda \sigma_{1 n}+(1-\lambda) \sigma_{2 n}\right)\\
+\lambda \sigma_{11}+(1-\lambda) \sigma_{21}+\cdots+\lambda \sigma_{n r+}+(1-\lambda) \sigma_{2 n}=\\
+\lambda\left(\sigma_{11}+\cdots+\sigma_{1 n}\right)+(1-\lambda)\left(\sigma_{21}+\cdots+\tau_{2 n}\right)={\sigma}_{Tot}.
+\end{array}
+$$
+Next, we will see that there exists $\gamma \leqslant 0$ such that
+$$f_{0}\left(x, \overline{\sigma}, t\right)+\gamma=\lambda a_{1}+(1-\lambda) a_{2}.$$
+We note that $f_0$ is constant with respect to the control variable, then
+$$
+f_{0}\left(x, \lambda \sigma_{1}+(1-\lambda) \sigma_{2}, t\right)=\lambda f_{0}\left(x_{1}, \sigma_{1}, t\right)+(1-\lambda) f_{0}\left(x, \sigma_{2}, t\right)
+$$
+If we define $\gamma=\lambda \gamma_{1}+(1-\lambda) \gamma_{2} \leqslant 0$, we have that
+$$
+\begin{aligned}
+f_{0}\left(x_{1} \lambda \sigma_{1}+(1-\lambda) \sigma_{2}, t\right)+\gamma &=\left[\lambda f_{0}\left(x_{1} \sigma_{1}, t\right)+(1-\lambda) f_{0}\left(x, \sigma_{2}, t\right)\right]+\left(\lambda \gamma_{1}+(1-\lambda) \gamma_{2}\right] \\
+&=\lambda f_{0}\left(x_{1} \sigma_{1}, t\right)+\lambda \gamma_{1}+(1-\lambda) f_{0}\left(x, \sigma_{2} t\right)+(1-\lambda) \gamma_{2} \\
+&=\lambda\left(f_{0}\left(x, \sigma_{1}, t\right)+\gamma_{1}\right)+(1-\lambda)\left(f_{0}\left(x, \sigma_{2}, t\right)+\gamma_{2}\right) \\
+&=\lambda a_{1}+(1-\lambda) a_{2}.
+\end{aligned}
+$$
+Therefore, it was proved that there exists 
+$\gamma=\lambda \gamma_{1}+(1-\lambda) \gamma_{2} \leqslant 0$ and there exists $\overline{\sigma}=\lambda \sigma_{1}+(1-\lambda) \sigma_{2} \in U_{ad}$
+such that 
+$$\left(\lambda {a_{1}}+(1-\lambda) {a_{2}}, \lambda b_{1}+(1-\lambda) b_{2}\right)=\left(f_{0}\left(x, \overline{\sigma}, t\right)+\gamma , f\left(x, \overline{\sigma}, t\right)\right),$$
+i.e.
+$$\left(\lambda a_{1}+(1-\lambda) a_{2}, \lambda b_{1}+(1-\lambda) b_{2}\right) \in N\left(x, U_{ad}, t\right)$$
+and $N\left(x, U_{a d}, t\right)$ is a convex set, for all fixed $(x,t)$.
+
+Moreover, $U_{ad}$ is a compact set, since $0 \leqslant \sigma_{i} \leqslant \sigma_{\text {Tot }}, \forall i=1, \ldots, n$. Finally, taking into account that the number of susceptible, infected and removed individuals are bounded by the total quantity of individuals, we have that $\|x(t)\| \leqslant b$. Therefore, we have verified the hypothesis of Filippov-Cesari Existence Theorem and the thesis holds.
+\end{proof}
+
+\section{Optimality system}
+
+In this Section, we obtain the optimality system, which is derived of the Pontryagin Maximum Principle. We define the Lagrangian by
+\[
+L=\sum_{i=1}^{n} I_{i}(t)
+\]
+and the Hamiltonian by
+\[
+H=L+\sum_{i=1}^{n} \left[\lambda_{1i}\frac{d S_{i}}{dt}+\lambda_{2i}\frac{d I_{i}}{dt}+\lambda_{3i}\frac{d R_{i}}{dt}\right] 
+\]
+where $\lambda_{1i}$, $\lambda_{2i}$ and $\lambda_{3i}$ are the adjoint variables to be determined suitably.
+
+\begin{thm}
+Let $(I^{*}, \sigma^{*})$ be a optimal solution for the optimal control problem (\ref{OptimalProblem}), where $I^{*}(t)=(I_{1}^{*}(t),\cdots, I_{n}^{*}(t))$ and $\sigma^{*}(t)=(\sigma_{1}^{*}(t),\cdots, \sigma_{n}^{*}(t))$. Then there exist adjoint variables $\lambda_{1i}$, $\lambda_{2i}$ and $\lambda_{3i}$ for $i=1,\cdots, n$, that satisfy
+\begin{equation}\label{lambda1}
+\frac{d\lambda_{1i}}{dt}=-\lambda_{1i}\left(\sum_{j=1}^{n} \beta_{i j} I_{j}(t)-\delta\sigma_{i}-d\right)-\lambda_{2i}\left(\sum_{j=1}^{n} \beta_{i j} I_{j}(t)\right)-\lambda_{3i}\delta\sigma_{i}
+\end{equation}
+\begin{equation}\label{lambda2}
+\frac{d\lambda_{2i}}{dt}=-1-\lambda_{2i}\left(d+\alpha+\gamma\right)-\lambda_{3i}\gamma 
+\end{equation}
+\begin{equation}\label{lambda3}
+\frac{d\lambda_{3i}}{dt}=\lambda_{3i}d
+\end{equation}
+with transversality conditions
+\begin{equation}\label{transver}
+\lambda_{1i}(T)=\lambda_{2i}(T)=\lambda_{3i}(T)=0
+\end{equation}
+Furthermore, the optimality equation is given by
+\begin{equation}\label{OptimalityEquation}
+(\lambda_{1i}-\lambda_{1i})\delta S_{i}^{*}=0.
+\end{equation}
+\end{thm}
+
+\begin{proof}
+We know, from the Pontryagin Maximum Principle (see \cite{Chen-2014}), that if $(I^{*}, \sigma^{*})$ is a optimal solution for the optimal control problem (\ref{OptimalProblem}), then there exists a vectorial function $\lambda(t)=(\lambda_{1}(t),\cdots,\lambda_{n}(t))$ satisfying the following equalities
+\begin{equation*}
+\left\{\begin{array}{l}\frac{d \lambda}{d t}=-\frac{\partial H(t,I^{*}(t)),\sigma^{*}(t),\lambda(t)}{\partial I}\\ 
+\frac{\partial H(t,I^{*}(t)),\sigma^{*}(t),\lambda(t)}{\partial \sigma}=0 \\ 
+\frac{d I}{d t}=-\frac{\partial H(t,I^{*}(t)),\sigma^{*}(t),\lambda(t)}{\partial \partial \lambda}.
+\end{array}\right. 
+\end{equation*}
+Here, taking into account that
+\[
+H=\sum_{i=1}^{n} I_{i}(t)+\sum_{i=1}^{n} \left[\lambda_{1i}\frac{d S_{i}}{dt}+\lambda_{2i}\frac{d I_{i}}{dt}+\lambda_{3i}\frac{d R_{i}}{dt}\right] 
+\]
+we have
+\[
+\frac{d\lambda_{1i}}{dt}=-\frac{dH}{dS_{i}}=-\frac{dI_{i}}{dS_{i}}-\left[\lambda_{1i}\frac{\partial}{\partial S_{i}}(\frac{d S_{i}}{dt})+\lambda_{2i}\frac{\partial}{\partial S_{i}}(\frac{d I_{i}}{dt})+\lambda_{3i}\frac{\partial}{\partial S_{i}}(\frac{d R_{i}}{dt})\right] 
+\]
+\[
+\frac{d\lambda_{2i}}{dt}=-\frac{dH}{dI_{i}}=-\frac{dI_{i}}{dI_{i}}-\left[\lambda_{1i}\frac{\partial}{\partial I_{i}}(\frac{d S_{i}}{dt})+\lambda_{2i}\frac{\partial}{\partial I_{i}}(\frac{d I_{i}}{dt})+\lambda_{3i}\frac{\partial}{\partial I_{i}}(\frac{d R_{i}}{dt})\right] 
+\]
+\[
+\frac{d\lambda_{3i}}{dt}=-\frac{dH}{dR_{i}}=-\frac{dI_{i}}{dR_{i}}-\left[\lambda_{1i}\frac{\partial}{\partial R_{i}}(\frac{d S_{i}}{dt})+\lambda_{2i}\frac{\partial}{\partial R_{i}}(\frac{d I_{i}}{dt})+\lambda_{3i}\frac{\partial}{\partial R_{i}}(\frac{d R_{i}}{dt})\right] 
+\]
+that is, we obtain the equations (\ref{lambda1}), (\ref{lambda2}) and (\ref{lambda3}), with the transversality conditions (\ref{transver}). Moreover, the optimality equation is given by
+\[
+\frac{\partial H(t,I^{*}(t)),\sigma^{*}(t),\lambda(t))}{\partial\sigma}=0
+\]
+i.e.
+\begin{equation*}
+(\lambda_{1i}-\lambda_{1i})\delta S_{i}^{*}=0.
+\end{equation*}
+and the thesis holds.
+\end{proof}
+
+
+\begin{rem}
+We note that the optimal control $\sigma^{*}$ is not explicit in the optimality equation (\ref{OptimalityEquation}).
+\end{rem}
+
+
+
+
+
+
+
+\section{Numerical results}  
+
+..........................
+
+
+
+  \bibliographystyle{apalike}
+  \bibliography{control, epidemias, EpidemiologiaPapers,otros}
+
+\end{document}
