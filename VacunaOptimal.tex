@@ -40,7 +40,7 @@
 
 
 We consider the following SIR model of metapopulations with migrations:
-\begin{equation}
+\begin{equation}\label{eq:ModeloSIR}
 \left\{\begin{array}{l}\frac{d S_{i}}{d t}=\mu N_{i}-S_{i}(t) \sum_{j=1}^{n} \beta_{i j} I_{j}(t)-\delta \sigma_{i} S_{i}(t)-d S_{i}(t) \\ 
 \frac{d I_{i}}{d t}=S_{i}(t) \sum_{j=1}^{n} \beta_{i j} I_{j}(t)-(d+\alpha+\gamma) I_{i}(t) \\ 
 \frac{d R_{i}}{d t}=\gamma I_{i}(t)+\delta \sigma_{i} S_{i}(t)-d R_{i}(t)\\
@@ -62,7 +62,9 @@ where
 \input{SIR_vacuna.pdf_tex}
 
 We suupose that $\sigma_{T}:[0,T]\to\mathbb{R}_+$ is a non-negative function. We consider the admissible control set
-\[U_{ad}=\left\{\sigma=\left(\sigma_{1}, \ldots, \sigma_{n}\right): \sigma_{i}\right.\text{ measurable }, \left.\sigma_{i} \geqslant 0, \sigma_{1}+\cdots+\sigma_{n}=\sigma_{T}(t)\right\}\]
+\[U_{ad}=\left\{\sigma=\left(\sigma_{1}, \ldots, \sigma_{n}\right): \sigma_{i}\right.\text{ measurable }, \left.\sigma_{i} \geqslant 0, \sigma_{1}S_{1}+\cdots+\sigma_{n}S_{n}\leq\sigma_{T}(t)\right\}.\]
+Here, $\sigma_{T}(t)$ represent the number of vaccines per unit of time for the total population.
+
 
 \begin{color}{red} Nota 26/07/2022: 
 
@@ -85,7 +87,27 @@ we formulate the optimal control problem
 
 \section{Some observations on dynamics of vaccine metapopulation model}
 
+\begin{prop} Let $S_i$, $I_i$ and $R_i$, $i=1,2,\ldots,n$ be the solutions of \eqref{eq:ModeloSIR}. If $S_{i0}\geq 0$, $I_{i0}\geq 0$ and $R_{i0}\geq 0$ for every $i=1,2,\ldots,n$ then $S_{i}(t)\geq 0$, $I_{i}(t)\geq 0$ and $R_{i}(t)\geq 0$ for  $i\in\{1,2,\ldots,n\}$ and  $t>0$.
+\end{prop}
 
+\begin{proof}
+Let $C_1=\left\{(X,Y,Z)\in\mathbb{R}^{3n}: X_i\geq 0, Y_i\geq 0, Z_i\geq 0,\ \text{for}\ i=1,2,\ldots,n \right\}$. Let's define the function $f:\mathbb{R}^{3n}\times [0,\infty)\to \mathbb{R}^{3n}$ as
+\begin{equation*}
+    f(X,Y,Z,t)=\left(\begin{array}{l}\mu N_{i}-X_{i} \sum_{j=1}^{n} \beta_{i j} Y_{j}-\delta \sigma_{i}(t) X_{i}-d X_{i} \\ 
+X_{i} \sum_{j=1}^{n} \beta_{i j} Y_{j}-(d+\alpha+\gamma) Y_{i} \\ 
+\gamma Y_{i}+\delta \sigma_{i}(t) X_{i}-d Z_{i}
+\end{array}\right)
+\end{equation*}
+To demosntrate this Proposition, By Theorem ??????, we only need to prove that for every $(X,Y,Z)\in C_1$ and $t\in [0,\infty)$, the equality
+\begin{equation}\label{eq:lim=0}
+    \lim\limits_{h\to 0^{+}}\frac{\textrm{d}\left( (X,Y,Z)+hf(X,Y,Z,t),C_1\right)}{h}=0
+\end{equation}
+ is satisfied, here $\textrm{d}$ represents the Euclidean distance in $\mathbb{R}^{3n}$. Let $\tilde{\delta}>0$ such that 
+ \begin{equation*}
+     \tilde{\delta}\left(\sum_{j=1}^n\beta_{ij}Y_{j}+\delta\sigma_{i}(t)+d\right)<1, \ \ \ \tilde{\delta}\left(\beta_{ii}X_i+\delta+\gamma+\alpha\right)<1 \ \ \ \text{and} \ \ \ \tilde{\delta}d<1
+ \end{equation*}
+for every $i\in\{1,2,\ldots,n\}$. Now, if $0<h<\tilde{\delta}$ the expression $(X,Y,Z)+hf(X,Y,Z,t)\in C_1$ and therefore equation \eqref{eq:lim=0} holds.
+\end{proof}
 
 We assume $\mu=d=\alpha=0$ and $\delta=1$. In this situation $N_i':=(S_i+I_i+R_i)'=0$, i.e. the total population of node $i$ remain constant. Cosequently $R_i=N-S_i-I_i$ and  we can drop the equation for $R_i$  of the system. Therefore, we can study the SIR metapopulation model with vaccination (SIRmv) system.
 
@@ -117,15 +139,41 @@ From  \eqref{eq:SIRmv1} and \eqref{eq:1order} we obtain that
 
 
 
+
 The following conjecture establish that if is a irreducible matrix (see \cite{CarlD.Meyer538}) the epidemic is transmitted from any node to the rest with infinite speed.
 
 
 \begin{prop} Suppose that $\beta$ is a irreducible matrix. If there exists $i$ such that $I_i(0)>0$ then for evey $j$ and $t>0$ we have $I_j(t)>0$.
- 
 \end{prop}
  
-\begin{proof} Agregar
- +
+\begin{proof} Let $i,j\in \{1,2,\ldots,n\}$ such that $I_i(0)>0$ and $i \neq j$. 
+
+Suppose first that $\beta_{ij}>0$. 
+Let's fix $\epsilon>0$ and see that $I_j(t)$ is positive for all  $t>\epsilon$. As $I_i(0)>0$ then $I_i(\epsilon)>0$. For $t>\epsilon$ we have that
+\begin{equation*}
+I_j(t)=e^{-\int_{\epsilon}^{t}(\gamma-\beta_{jj}) ds}\left(I_j(\epsilon)+\int_{\epsilon}^{t}e^{\int_{\epsilon}^{s}(\gamma-\beta_{jj}) dz}\left[S_j(s)\sum_{k=1,k\neq j}^{n}\beta_{jk}I_k(s)\right]ds\right).
+\end{equation*}
+Let's assume that $I_j(\epsilon)>0$, then, as the functions $S_k$ and $I_k$ are non negative, we have that $I_j(t)>0$ for $t>\epsilon$. If  we suppose that $I_j(\epsilon)=0$,
+by Taylor's theorem, we can see that
+\begin{equation*}
+\begin{split}
+I_j(t)&=I_j(\epsilon)+I_j'(\epsilon)(t-\epsilon)+h_{j,\epsilon}(t)\\
+&=I_j(\epsilon)+S_j(\epsilon)\sum_{k=1}^{n}\beta_{jk}I_k(\epsilon)(t-\epsilon)-\gamma I_j(\epsilon)(t-\epsilon)+h_{j,\epsilon}(t)\\
+&\geq I_j(\epsilon)+S_j(\epsilon)\beta_{ji}I_i(\epsilon)(t-\epsilon)-\gamma I_j(\epsilon)(t-\epsilon)+h_{j,\epsilon}(t)\\
+&=I_j(\epsilon)+N_j\beta_{ji}I_i(\epsilon)(t-\epsilon)+h_{j,\epsilon}(t).
+\end{split}
+\end{equation*}
+Thus
+\begin{equation*}
+\frac{I_j(t)-I_j(\epsilon)}{t-\epsilon}\geq N_j\beta_{ji}I_i(\epsilon)+\frac{h_{j,\epsilon}(t)}{t-\epsilon},
+\end{equation*}
+and therefore $I'_j(\epsilon)\geq N_j\beta_{ji}I_i(\epsilon)>0$, which implies that there exists $\epsilon_1>\epsilon$  such that if $t\in (\epsilon,\epsilon_1]$ then $I_j(t)>0$. Now,  reasoning analogously as we did for the case where $I_j(\epsilon)>0$, as  $I_j\left(\epsilon_1\right)>0$ then $I_j(t)>0$ for every $t>\epsilon_1$. Thus, $I_j(t)>0$ for all $t>\epsilon$. Since $\epsilon$ is an arbitrary positive number we have that $I_j(t)>0$ for every $t>0$.
+
+Suppose now that $\beta_{ij}=0$. 
+Since the matrix $\beta$ is irreducible, we have that there exist $j_1,j_2,\ldots,j_l \in \{1,2,\ldots,n\}$ such that $\beta_{{j_{1} i}}>0$, $\beta_{j_{r}j_{r-1}}>0$ for $r=2,3,\ldots,l$, and $\beta_{jj_{l}}>0$. Reasoning in the same way as we did in the previous paragraph we can see that, $I_{j_1}(t)>0$ for all $t>0$, which implies that $I_{j_2}(t)>0$ for every $t>0$ (note that is no neccesary that $I_{j_1}(0)>0$ to guarantee this fact), this last statement assure us that $I_{j_2}(0)>0$, and continuing in this way we can see that $I_j(t)>0$ for all $t>0$.
+
+
+
 \end{proof}
 
 \begin{lem}\label{lem:lim-weak} Let $h\in L^{\infty}([0,+\infty))$ be a function. Suppose that there exists  $\lim_{t\to\infty}h(t)$ and denote it by $h_{\infty}$. Then
@@ -244,33 +292,33 @@ Taking the limit for $t\to\infty$ in previous identities and using Lemma \ref{le
 
 \section{Existence minimizers}
 
-In this Section, we prove that the optimal control problem (\ref{OptimalProblem}) has a solution. That is,  we prove that the hypothesis of the Filippov-Cesari Theorem are satisfied (see \cite{A.Seierstad499}). In what follows, we will use the following notation
+In this Section, we prove that the optimal control problem (\ref{OptimalProblem}) has a solution. That is, we prove that the hypothesis of the Filippov-Cesari Theorem are satisfied (see \cite{A.Seierstad499}). In what follows, we will use the following notation
 $$
 x=\left(S_{1}, \ldots, S_{n}, I_{1}, \ldots, I_{n}, R_{1},\ldots, R_{n}\right)
 $$
 \[f_{0}\left(x_{i}, \sigma_{i}, t\right)=f_{0}\left(S_{1}, \ldots, S_{1}, I_{1}\ldots, I_n, R_{1}, \cdots, R_{n} ; \sigma_{1}, \cdots, \sigma_{n} ; t\right)=\sum_{i=1}^{n} I_{i}(t).\]
 For $i=1,2,\cdots, n$, we denote by
 $$
-f_{i}=\left(f_{0 i}, f_{2 i}, f_{3 i}\right), \quad  f=\left(f_{1}, \ldots, f_{n}\right) 
+f_{i}=\left(f_{1 i}, f_{2 i}, f_{3 i}\right), \quad  f=\left(f_{1}, \ldots, f_{n}\right) 
 $$
 with
 \[f_{1 i}=\mu N_{i}-S_{i}(t) \sum_{j=1}^{n} \beta_{i} I_{j}(t)-\delta \sigma_{i} S_{i}(t)-d S_{i}(t)\]
 \[f_{2i}=S_{i}(t) \sum_{j=1}^{n} \beta_{i} I_{j}(t)-(d+\alpha+\gamma) I_{i}(t)\]
 \[f_{3 i}=\gamma I_{i}(t)+\delta \sigma_{i} S_{i}(t)-d R_{i}(t)\]
 and we define
-$$N\left(x, U_{a d}, t\right)=\left\{\left(f_{0}+\gamma, f\right):\, \gamma \leqslant 0,\, \sigma \in U_{a d}\right\}.$$
+$$N\left(x, U_{a d}, t\right)=\left\{\left(f_{0}+\gamma, f\right):\, \gamma \geq 0,\, \sigma \in U_{a d}\right\}.$$
 Now, we will are in conditions to prove the following result.
 
 \begin{thm}
 The optimal control problem (\ref{OptimalProblem}) has a solution $\sigma^{*} \in U_{ad}$.
 \end{thm}
 \begin{proof}
-We will see that $N(x, U_{a d}, t)$ is a convex set, for every $(x,t)$. 
+We prove that $N(x, U_{a d}, t)$ is a convex set, for all $(x,t)$. 
 
 Let 
-$\left(a_{1}, b_{1}\right), \left(a_{2}, b_{2}\right) \in N\left(x, U_{a d}, t\right)$ be, then  there exist $\gamma_{1}, r_{2} \leq 0$ and $\sigma_{1}, \sigma_2 \in  U_{a d}$ such that 
+$\left(a_{1}, b_{1}\right), \left(a_{2}, b_{2}\right) \in N\left(x, U_{a d}, t\right)$ be, then there exist $\gamma_{1}, \gamma_{2} \geq 0$ and $\sigma_{1}, \sigma_2 \in  U_{a d}$ such that 
 $$
-\left(f_{0}\left(x, y_{1}, t\right)+\gamma_{1} ; f\left(x, \sigma_{2}, t\right)\right)=\left(a_{1}, b_{1}\right) 
+\left(f_{0}\left(x, \sigma_{1}, t\right)+\gamma_{1} ; f\left(x, \sigma_{1}, t\right)\right)=\left(a_{1}, b_{1}\right) 
 $$
 and
 $$
@@ -281,47 +329,52 @@ $$
 \lambda\left(a_{1}, b_{1}\right)+(1-\lambda)\left(a_{2}, b_{2}\right)=\left(\lambda a_1+(1-\lambda) a_{2}, \lambda b_{1}+(1-\lambda) b_{2}\right)
 $$
 $$
-=\left(\lambda\left(f_{0}\left(x, \sigma_{1}, t\right)+\gamma_{1}\right)+(1-\lambda)\left(f_{0}\left(x_{1}, \sigma_{2}, t\right)+r_{2}\right), \lambda f\left(x_{1}, r_{1}, t\right)+(1-\lambda) f\left(x_{1} \sigma_{2}, t\right)\right).
+=\left(\lambda\left(f_{0}\left(x, \sigma_{1}, t\right)+\gamma_{1}\right)+(1-\lambda)\left(f_{0}\left(x_{1}, \sigma_{2}, t\right)+\gamma_{2}\right), \lambda f\left(x, \sigma_{1}, t\right)+(1-\lambda) f\left(x,\sigma_{2}, t\right)\right).
 $$
 Now, we consider the second component
 $$
-\lambda f\left(x, \sigma_{1}, t\right)+(j-\lambda) f\left(x, \sigma_{2}, t\right)
+\lambda f\left(x, \sigma_{1}, t\right)+(1-\lambda) f\left(x, \sigma_{2}, t\right)
 $$
 and from the linearity of $f$ with respect $\sigma$, we have 
 \[\lambda f\left(x, \sigma_{1}, t\right)+(1-\lambda) f\left(x, \sigma_{2}, t\right)=f\left(x, \lambda \sigma_{1}+(1-\lambda) \sigma_{2}, t\right)\]
 Moreover, $\overline{\sigma}=\lambda \sigma_{1}+(1-\lambda) \sigma_{2} \in U_{ad}$. In fact, $\lambda \sigma_{1}+(1-\lambda) \sigma_{2}$ is measurable, $\lambda \sigma_{1}+(1-\lambda) \sigma_{2} \geqslant 0$ and if we consider
-$\sigma_{1}=\left(\sigma_{11}, \ldots \ldots, \sigma_{1 n}\right)$ and $ \sigma_{2}=\left(\sigma_{21} \ldots \ldots \sigma_{2 n}\right)$ in $U_{ad}$, then we have
+$\sigma_{1}=\left(\sigma_{11}, \ldots \ldots, \sigma_{1 n}\right)$ and $ \sigma_{2}=\left(\sigma_{21} \ldots \ldots \sigma_{2 n}\right)$ in $U_{ad}$, then
+\[
+\lambda \sigma_{1}+(1-\lambda) \sigma_{2}=\left(\lambda \sigma_{11}+(1-\lambda) \sigma_{21}, \ldots,\lambda \sigma_{1 n}+(1-\lambda) \sigma_{2 n}\right)
+\]
+next
 $$
 \begin{array}{l}
-\lambda \sigma_{1}+(1-\lambda) \sigma_{2}=\left(\lambda \sigma_{11}+(1-\lambda) \sigma_{21}, \ldots \lambda \sigma_{1 n}+(1-\lambda) \sigma_{2 n}\right)\\
-\lambda \sigma_{11}+(1-\lambda) \sigma_{21}+\cdots+\lambda \sigma_{n r+}+(1-\lambda) \sigma_{2 n}=\\
-\lambda\left(\sigma_{11}+\cdots+\sigma_{1 n}\right)+(1-\lambda)\left(\sigma_{21}+\cdots+\tau_{2 n}\right)={\sigma}_{Tot}.
+\left(\lambda \sigma_{11}+(1-\lambda) \sigma_{21}\right)S_{1}+\cdots+\left(\lambda \sigma_{1n}+(1-\lambda) \sigma_{2n}\right)S_{n}=\\
+\lambda\left(\sigma_{11}S_{1}+\cdots+\sigma_{1 n}S_{n}\right)+(1-\lambda)\left(\sigma_{21}S_{1}+\cdots+\tau_{2 n}S_{n}\right)\leq {\sigma}_{Tot}
 \end{array}
 $$
-Next, we will see that there exists $\gamma \leqslant 0$ such that
+therefore $\lambda \sigma_{1}+(1-\lambda) \sigma_{2}\in U_{ad}$.
+
+Now, we prove that there exists $\gamma \geq 0$ such that
 $$f_{0}\left(x, \overline{\sigma}, t\right)+\gamma=\lambda a_{1}+(1-\lambda) a_{2}.$$
 We note that $f_0$ is constant with respect to the control variable, then
 $$
-f_{0}\left(x, \lambda \sigma_{1}+(1-\lambda) \sigma_{2}, t\right)=\lambda f_{0}\left(x_{1}, \sigma_{1}, t\right)+(1-\lambda) f_{0}\left(x, \sigma_{2}, t\right)
+f_{0}\left(x, \lambda \sigma_{1}+(1-\lambda) \sigma_{2}, t\right)=\lambda f_{0}\left(x, \sigma_{1}, t\right)+(1-\lambda) f_{0}\left(x, \sigma_{2}, t\right).
 $$
-If we define $\gamma=\lambda \gamma_{1}+(1-\lambda) \gamma_{2} \leqslant 0$, we have that
+If we define $\gamma=\lambda \gamma_{1}+(1-\lambda) \gamma_{2} \geq 0$, we have that
 $$
 \begin{aligned}
-f_{0}\left(x_{1} \lambda \sigma_{1}+(1-\lambda) \sigma_{2}, t\right)+\gamma &=\left[\lambda f_{0}\left(x_{1} \sigma_{1}, t\right)+(1-\lambda) f_{0}\left(x, \sigma_{2}, t\right)\right]+\left(\lambda \gamma_{1}+(1-\lambda) \gamma_{2}\right] \\
-&=\lambda f_{0}\left(x_{1} \sigma_{1}, t\right)+\lambda \gamma_{1}+(1-\lambda) f_{0}\left(x, \sigma_{2} t\right)+(1-\lambda) \gamma_{2} \\
+f_{0}\left(x,\lambda \sigma_{1}+(1-\lambda) \sigma_{2}, t\right)+\gamma &=\left[\lambda f_{0}\left(x,\sigma_{1}, t\right)+(1-\lambda) f_{0}\left(x, \sigma_{2}, t\right)\right]+\left[(\lambda \gamma_{1}+(1-\lambda) \gamma_{2}\right] \\
+&=\lambda f_{0}\left(x,\sigma_{1}, t\right)+\lambda \gamma_{1}+(1-\lambda) f_{0}\left(x, \sigma_{2}, t\right)+(1-\lambda) \gamma_{2} \\
 &=\lambda\left(f_{0}\left(x, \sigma_{1}, t\right)+\gamma_{1}\right)+(1-\lambda)\left(f_{0}\left(x, \sigma_{2}, t\right)+\gamma_{2}\right) \\
 &=\lambda a_{1}+(1-\lambda) a_{2}.
 \end{aligned}
 $$
-Therefore, it was proved that there exists 
-$\gamma=\lambda \gamma_{1}+(1-\lambda) \gamma_{2} \leqslant 0$ and there exists $\overline{\sigma}=\lambda \sigma_{1}+(1-\lambda) \sigma_{2} \in U_{ad}$
+Therefore, we proved that there exists 
+$\gamma=\lambda \gamma_{1}+(1-\lambda) \gamma_{2} \geq 0$ and there exists $\overline{\sigma}=\lambda \sigma_{1}+(1-\lambda) \sigma_{2} \in U_{ad}$
 such that 
 $$\left(\lambda {a_{1}}+(1-\lambda) {a_{2}}, \lambda b_{1}+(1-\lambda) b_{2}\right)=\left(f_{0}\left(x, \overline{\sigma}, t\right)+\gamma , f\left(x, \overline{\sigma}, t\right)\right),$$
 i.e.
 $$\left(\lambda a_{1}+(1-\lambda) a_{2}, \lambda b_{1}+(1-\lambda) b_{2}\right) \in N\left(x, U_{ad}, t\right)$$
 and $N\left(x, U_{a d}, t\right)$ is a convex set, for all fixed $(x,t)$.
 
-Moreover, $U_{ad}$ is a compact set, since $0 \leqslant \sigma_{i} \leqslant \sigma_{\text {Tot }}, \forall i=1, \ldots, n$. Finally, taking into account that the number of susceptible, infected and removed individuals are bounded by the total quantity of individuals, we have that $\|x(t)\| \leqslant b$. Therefore, we have verified the hypothesis of Filippov-Cesari Existence Theorem and the thesis holds.
+Moreover, $U_{ad}$ is a compact set, since $0 \leq \sigma_{i} \leq \sigma_{\text {Tot }}, \forall i=1, \ldots, n$. Finally, taking into account that the number of susceptible, infected and removed individuals are bounded by the total quantity of individuals, we have that $\|x(t)\| \leqslant b$. Therefore, we have verified the hypothesis of Filippov-Cesari Existence Theorem and the thesis holds.
 \end{proof}
 
 \section{Optimality system}
