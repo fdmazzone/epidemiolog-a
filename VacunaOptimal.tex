@@ -10,7 +10,7 @@
 \usepackage{todonotes}
  \usepackage{empheq}
 \usepackage{fixme} 
-
+\usepackage{mathrsfs}
  
 \newtheorem{thm}{Theorem}[section]
 \newtheorem{cor}[thm]{Corollary}
@@ -76,12 +76,15 @@ In \cite{Chen-2014,Chen-2014b} optimal control in a metapopulation  SIR model wi
  One of the main differences between previous papers  and this article is that we do not consider that access to the provision of vaccines is  limited by their cost, but rather vaccine supply is limited. We assume given the quatity of vaccines per unit time   for the entire network. This leads us to what in optimal control theory is called mixed variable state constraints. In \cite{mbah2011resource, rowthorn2009optimal} variable state constraint are introduced for  treatment control optimal problems.  
 
  
- \todo{Es un super-borrador. Hay que trabajar mucho en mejorar  la redacción. Se puede a su vez profundizar más en la bibliografía citada} 
+ \todo[inline]{Es un super-borrador de introducción. Hay que trabajar mucho en mejorar  la redacción y desarrollar un poca más.} 
 
  
-\section{The mathematical model and its  consistency}
+\section{The mathematical model}
 
-We will assume a population of N individuals with a birth rate equal to mu and a death rate also equal to mu. In this way the total population N is constant in time. Let's assume that the total population is divided into n subpopulations according to a certain criterion (geographic, social activity, number of links in a graph of a complex network, etc.). Let us compartmentalize each subpopulation into susceptible, infected, immunized individuals, $S_i$, $I_i$ and $R_i$ respectively. We consider the following network-based SIR epidemic model:
+\subsection{Description and consistency}
+By the consistency of the model we understand that the model presented has a solution, this is unique and that the model produces predictions consistent with the biological interpretation of the variables.
+
+We will assume a population of $N$ individuals with a birth rate equal to $\mu$ equal to death rate. In this regard, we will assume that the behavior of the population is homogeneous, that is, any subset of individuals in the population maintains the same birth and death rates. In this way the total population $N$ is constant in time. Let's assume that this population is divided into $n$ subpopulations according to a certain criterion (geographic, social activity, number of links in a graph of a complex network, etc.). Let us compartmentalize each subpopulation into susceptible, infected, immunized individuals, $S_i$, $I_i$ and $R_i$ respectively. We consider the following network-based SIR epidemic model:
 
 \begin{empheq}[left=\empheqlbrace,]{align}\label{eq:ModeloSIR1}
     S'_{i}(t)&=\mu N_i-S_{i}(t) \sum\limits_{j=1}^{n} \beta_{i j} I_{j}(t)-  (u_{i}(t) +\mu) S_{i}(t)+\alpha R_i(t)  \\ \label{eq:ModeloSIR2}
@@ -89,7 +92,7 @@ We will assume a population of N individuals with a birth rate equal to mu and a
     R'_{i}(t)&=\gamma I_{i}(t)+  u_{i}(t) S_{i}(t)-(\mu+\alpha) R_{i}(t)  
 \end{empheq}
 where     $1=1,\ldots , n$ and $N_i=S_i+I_i+R_i$ is the total poblation of node $i$.   The parameters in the model have the following meanings: $\beta_{ii}$, $i=1,\ldots,n$, $\beta_{ij}$, $i\neq j$   are the transmission rates within and
-between subpopulations, respectively;  $\mu$ is the birth-death rate;  $ u_{i}(t)$ is the vaccination rate at the node $i$ at moment $t$(control variable);  $\gamma^{-1} $  is the infectious period and $\alpha^{-1} $  is the immunity period.\todo{Estamos permitiendo reinfecciones}
+between subpopulations, respectively;  $\mu$ is the birth-death rate;  $ u_{i}(t)$ is the vaccination rate at the node $i$ at moment $t$(control variable);  $\gamma^{-1} $  is the infectious period and $\alpha^{-1} $  is the immunity period.\todo{NUEVO: Estamos permitiendo reinfecciones}
 
 We observe that summing, for each $i$,  equations \eqref{eq:ModeloSIR1}-\eqref{eq:ModeloSIR3} we obtain $N'_i(t)=0$, i.e. $N_i$ is time independent. Consequently we can drop equation \eqref{eq:ModeloSIR3} in the system. Therefore, in this article we use the following state equations
 
@@ -115,9 +118,9 @@ Thus, for example, $\bm{\beta}$ denotes matrix $\{\beta_{ij}\}_{i,j=1}^n$, $\bm{
 
 \[
     \begin{split}
-     \bm{f}_1&=(\mu+\alpha)\bm{N}-\bm{S}\times (\bm{\beta}\bm{I}+\bm{u})-(\mu+\alpha)\bm{S}-\alpha\bm{I}\\
-     \bm{f}_2&=\bm{S}\times \bm{\beta}\bm{I}-(\mu+\gamma)\bm{I}.\\
-     \bm{f}&=(\bm{f}_1,\bm{f}_2)
+     \bm{f}_{\bm{S}}&=(\mu+\alpha)\bm{N}-\bm{S}\times (\bm{\beta}\bm{I}+\bm{u})-(\mu+\alpha)\bm{S}-\alpha\bm{I}\\
+     \bm{f}_{\bm{I}}&=\bm{S}\times \bm{\beta}\bm{I}-(\mu+\gamma)\bm{I}.\\
+     \bm{f}&=(\bm{f}_{\bm{S}},\bm{f}_{\bm{I}})
      \end{split}
 \]
 
@@ -180,6 +183,7 @@ I_i(t)= \exp\left(- (\mu+\gamma)t \right)
 \right\} 
 \end{empheq}
 
+Equations \eqref{eq:eq_integralS}-\eqref{eq:eq_integralI} have the advantage that they are valid for every $t\geq 0$  while equations \eqref{eq:ModeloSIRb1}-\eqref{eq:ModeloSIRb2} holds true almost everywhere. 
 
 Although from a mathematical point of view the problem \eqref{eq:sist_compact}    
  makes sense for any  $\bm{x}$ it is only relevant for our model  in the closed set   
@@ -189,45 +193,29 @@ Although from a mathematical point of view the problem \eqref{eq:sist_compact}
 Since  $\nu N_i-\alpha I_i\geq 0$, we obtain from equations \eqref{eq:eq_integralS}-\eqref{eq:eq_integralI}  that $S_i(t), I_i(t)\geq 0$ for every $t$ where solutions are defined. On the other hand, $S_i(t)+I_i(t)\leq   N_i$. Consequently, the set $\Omega$ is flow invariant for the equation \eqref{eq:sist_compact}.  If $\Omega$ is any bounded an open set containing $\Omega_0$ and $\bm{x}_0\in\Omega_0$ we have that the solution $\bm{x}(t)$ of \eqref{eq:sist_compact} remains inside $\Omega$ for every $t>0$ where solution is defined.  We infer using continuation theory \cite[Th. 1.3]{EarlA.Coddington236} that the solition is defined for every positive time.  
 
 
-\section{Additional properties system \eqref{eq:ModeloSIRb1}-\eqref{eq:ModeloSIRb2}}
-\begin{prop} Let $S_i$, $I_i$ and $R_i$, $i=1,2,\ldots,n$ be the solutions of \eqref{eq:ModeloSIR}. If $S_{i0}\geq 0$, $I_{i0}\geq 0$ and $R_{i0}\geq 0$ for every $i=1,2,\ldots,n$ then $S_{i}(t)\geq 0$, $I_{i}(t)\geq 0$ and $R_{i}(t)\geq 0$ for  $i\in\{1,2,\ldots,n\}$ and  $t>0$.
-\end{prop}
+\subsection{Propagation on the network}
 
-\begin{proof}
-Let $C_1=\left\{(X,Y,Z)\in\mathbb{R}^{3n}: X_i\geq 0, Y_i\geq 0, Z_i\geq 0,\ \text{for}\ i=1,2,\ldots,n \right\}$. Let's define the function $f:\mathbb{R}^{3n}\times [0,\infty)\to \mathbb{R}^{3n}$ as
-\begin{equation*}
-    f(X,Y,Z,t)=\left(\begin{array}{l}\mu N_{i}-X_{i} \sum_{j=1}^{n} \beta_{i j} Y_{j}-\delta  u_{i}(t) X_{i}-d X_{i} \\ 
-X_{i} \sum_{j=1}^{n} \beta_{i j} Y_{j}-(d+\alpha+\gamma) Y_{i} \\ 
-\gamma Y_{i}+\delta  u_{i}(t) X_{i}-d Z_{i}
-\end{array}\right)
-\end{equation*}
-To demosntrate this Proposition, By Theorem ??????, we only need to prove that for every $(X,Y,Z)\in C_1$ and $t\in [0,\infty)$, the equality
-\begin{equation}\label{eq:lim=0}
-    \lim\limits_{h\to 0^{+}}\frac{\textrm{d}\left( (X,Y,Z)+hf(X,Y,Z,t),C_1\right)}{h}=0
-\end{equation}
- is satisfied, here $\textrm{d}$ represents the Euclidean distance in $\mathbb{R}^{3n}$. Let $\tilde{\delta}>0$ such that 
- \begin{equation*}
-     \tilde{\delta}\left(\sum_{j=1}^n\beta_{ij}Y_{j}+\delta u_{i}(t)+d\right)<1, \ \ \ \tilde{\delta}\left(\beta_{ii}X_i+\delta+\gamma+\alpha\right)<1 \ \ \ \text{and} \ \ \ \tilde{\delta}d<1
- \end{equation*}
-for every $i\in\{1,2,\ldots,n\}$. Now, if $0<h<\tilde{\delta}$ the expression $(X,Y,Z)+hf(X,Y,Z,t)\in C_1$ and therefore equation \eqref{eq:lim=0} holds.
-\end{proof}
+ 
+\todo[inline]{Desarrollaría un poco más, por ejemplo incluir definición de irreducibilidad, ver  por ejemplo \cite{CarlD.Meyer538} o \cite{GilbertGWalter295}. Considerar el modelos general, demografía y reinfecciones}
+
+
 
 We assume $\mu=d=\alpha=0$ and $\delta=1$. In this situation $N_i':=(S_i+I_i+R_i)'=0$, i.e. the total population of node $i$ remain constant. Cosequently $R_i=N-S_i-I_i$ and  we can drop the equation for $R_i$  of the system. Therefore, we can study the SIR metapopulation model with vaccination (SIRmv) system.
 
   \begin{empheq}[left=\empheqlbrace]{align}
- S'_{i} &= -S_{i}(t) \sum\limits_{j=1}^{n} \beta_{i j} I_{j}(t)-   u_{i}(t) S_{i}(t)\label{eq:SIRmv1}\tag{SIRmv1}\\
+ S'_{i} &= -S_{i}(t) \sum\limits_{j=1}^{n} \beta_{i j} I_{j}(t)-   u_{i}(t) S_{i}(t)\label{eq:ModeloSIRb1b}\tag{SIRmv1}\\
  I'_{i}&=S_{i}(t) \sum\limits_{j=1}^{n} \beta_{i j} I_{j}(t)-\gamma I_{i}(t)
- \label{eq:SIRmv2}\tag{SIRmv2}
+ \label{eq:ModeloSIRb2b}\tag{SIRmv2}
   \end{empheq}
 
   
-We  note that the system of equations \eqref{eq:SIRmv1}, \eqref{eq:SIRmv1} possibly has a discontinuous right hand side. I this case,  I this case, following to \cite{A.F.Filippov512}. \textcolor{red}{Poner el significado de solución}
+We  note that the system of equations \eqref{eq:ModeloSIRb1}, \eqref{eq:ModeloSIRb1} possibly has a discontinuous right hand side. I this case,  I this case, following to \cite{A.F.Filippov512}. \textcolor{red}{Poner el significado de solución}
   
 
 
 
 
-From  \eqref{eq:SIRmv1} and \eqref{eq:1order} we obtain that
+From  \eqref{eq:ModeloSIRb1} and \eqref{eq:1order} we obtain that
 
 \[
  S_i(t)=S_i(0)
@@ -245,7 +233,9 @@ The following conjecture establish that if is a irreducible matrix (see \cite{Ca
 \begin{prop} Suppose that $\beta$ is a irreducible matrix. If there exists $i$ such that $I_i(0)>0$ then for evey $j$ and $t>0$ we have $I_j(t)>0$.
 \end{prop}
  
-\begin{proof} Let $i,j\in \{1,2,\ldots,n\}$ such that $I_i(0)>0$ and $i \neq j$. 
+\begin{proof} \todo[inline]{Hay que repensar la demostración para admitir soluciones que no son derivables. Hay que utlizar ecuaciones \eqref{eq:eq_integralS} -\eqref{eq:eq_integralI}.  Hagamos la demostración para el modelo full- demografía y reinfecciones. Ojo! hay un caso excepcional, cuando no hay demografía ($\mu=0$), no hay reinfección ($\alpha=0$) e inicialmente todos son recuperados $R_i(0)=N_i$}
+
+Let $i,j\in \{1,2,\ldots,n\}$ such that $I_i(0)>0$ and $i \neq j$. 
 
 Suppose first that $\beta_{ij}>0$. 
 Let's fix $\epsilon>0$ and see that $I_j(t)$ is positive for all  $t>\epsilon$. As $I_i(0)>0$ then $I_i(\epsilon)>0$. For $t>\epsilon$ we have that
@@ -273,33 +263,368 @@ Since the matrix $\beta$ is irreducible, we have that there exist $j_1,j_2,\ldot
 
 
 
+
 \end{proof}
 
-\begin{lem}\label{lem:lim-weak} Let $h\in L^{\infty}([0,+\infty))$ be a function. Suppose that there exists  $\lim_{t\to\infty}h(t)$ and denote it by $h_{\infty}$. Then
-\begin{equation}\label{eq:lim-weak}
- h_{\infty}=\lim_{t\to\infty}\gamma\int_0^th(s)e^{\gamma (s-t)}ds.
+
+\subsection{The number of vaccines  for  $t\to +\infty$}
+
+The goal of this section is to show that, in some sense, the total number of vaccinated individuals $u_iS_i$ for any $i$ approaches zero as $t\to+\infty$. This regardless of the vaccination campaign. A very aggressive campaign, so that the vaccination rate $u_i$ are high, will imply that the number of susceptible individuals converges to zero fast enough so that the total number of vaccinated $u_iS_i$ also tends to zero.
+
+What we have actually shown is that certain regularizations of the functions $u_iS_i$ converge to zero at infinity. To state the result that we want to present, let us recall the concept of \emph{regularization} or \emph{approximation of identity}  \cite{EliasM.Stein120}. Let $\varphi$ be an  integrable function on $\mathbb{R}$ satisfying $\int_\mathbb{R}\varphi(t)dt=1$.  In this article we will only consider functions $\varphi$  with $\varphi(t)=0$ when $t\leq 0$ and $\varphi$ decreasing on $[0,+\infty)$. For $\gamma>0$, we set $\varphi_\gamma(t)=\gamma\varphi(\gamma t)$ and for any $f\in L^1(\mathbb{R})$ with $f(t)\equiv 0$ for $t<0$, we write
+\[
+ f_{\gamma}(t)=f\ast \varphi_\gamma (t):= \gamma\int_{-\infty}^\infty f(t-s)\varphi(\gamma s)ds= \gamma\int_0^t f(t-s)\varphi(\gamma s)ds. 
+\]
+
+Then it is well known \cite{EliasM.Stein120} that $f_\gamma$ are continuous and  $f_\gamma\to f$  almost everywhere and in $L^p$-norm.  
+
+ Suppose that $f\in L^\infty(\mathbb{R})$ and that there exists  $\lim_{t\to\infty}f(t)$.   Then, using the Lebesgue's dominated converge theorem 
+
+ \begin{equation}\label{eq:lim-weak}
+ \lim_{t\to\infty}f_\gamma(t) =\lim_{t\to\infty}f(t).
 \end{equation}
-\end{lem}
-\begin{proof} Given $\varepsilon>0$ there exists $t_0\geq 0$ such that 
-\[
- t\geq t_0\Rightarrow |h(t)-h_{\infty}|<\varepsilon.
-\]
-Using the identity
-\[
- \gamma\int_0^te^{\gamma (s-t)}ds=1-e^{-\gamma t},
-\]
-we can deduce
 
- \begin{multline*}
-  \left|h_{\infty}-\gamma\int_0^th(s)e^{\gamma (s-t)}ds\right|=
-  \left|e^{-\gamma t}h_{\infty}+ \gamma\int_0^t\left(h_{\infty}-h(s)\right)e^{\gamma (s-t)}ds \right|\\
-  \leq e^{-\gamma t}|h_{\infty}|+  \gamma\int_0^{t_0} \left|h_{\infty}-h(s)\right| e^{\gamma (s-t)}ds +\gamma\int_{t_0}^{t} \left|h_{\infty}-h(s)\right| e^{\gamma (s-t)}ds\\
-  e^{-\gamma t}|h_{\infty}|+2\gamma\|h\|_{L^{\infty}}e^{\gamma(t_0-t)}t_0+\varepsilon.
- \end{multline*}
-This inequality implies the result in lemma.
+
+\begin{comentario} Of course, the existence of the limit on the left hand side in equation \eqref{eq:lim-weak}   does not guarantee the existence of limit of $f(t)$ for $t\to\infty$. An example of this fact is shown uin appendix ?????.
+\end{comentario}
+
+The following proposition to expresses the fact that in the case when there are no demographic changes ($\mu=0$) and reinfections ($\alpha=0$) the  epidemic is extinguished when $t\to\infty$ and, in certain sense, the total quantity of applied vaccines $ u_iS_i$ goes to zero when $t\to\infty$.   
+
+\begin{prop} We assume that $\mu=\alpha=0$ and  that $\varphi(t)=e^{-t}$, when $t>0$ and $\varphi(t)=0$ otherwise. The regularized function $(u_iS_i)_\gamma$ of the total number of appiled vaccines per unit of time goes to zero when $t\to\infty$. More concretely
+\[
+ \lim\limits_{t\to\infty}\gamma\int_0^t  u_i(s)S_i(s)
+  e^{\gamma (s-t)}ds=I_i(\infty)=0.
+\]
+
+ 
+\end{prop}
+
+\begin{proof} Adding equations \eqref{eq:ModeloSIRb1} and \eqref{eq:ModeloSIRb2} we obtain 
+\[
+ (S_i+I_i)'=- u_iS_i-\gamma I_i\leq 0.
+\]
+Therefore  $S_i+I_i$ is a monotone non increasing function. Hence $\lim_{t\to\infty} (S_i+I_i)$ there exists. From \eqref{eq:ModeloSIRb1} the same considerations are true for function $S_i$. Consequently there exists $\lim_{t\to\infty} S_i(t)=:S_i(\infty)$. We deduce that there exists  $\lim_{t\to\infty} I_i(t)=:I_i(\infty)$. If $I(\infty)>0$, we could choose $t_0$ large enough for that $t\geq t_0$ implies $I_i(t)>I_i(\infty)/2=:a>0$. Then $(S_i(t)+I_i(t))'\leq -\gamma I_i(t)\leq -\gamma a$. This inequality implies that $S_i(t) +I_i(t)\to -\infty$, when $t\to\infty$, which is a contradiction. Consequently $I_i(\infty)=0$. 
+
+ 
+From  \eqref{eq:eq_integralI} we obtain 
+
+
+\[
+\begin{split}
+ I_i(t)&=e^{-\gamma t}
+ \left\{
+    I_i(0)+\int_0^t e^{\gamma s} S_{i}(s) \Theta_i(s)ds
+\right\}\\
+&= e^{-\gamma t}
+ \left\{
+    I_i(0)-\int_0^t e^{\gamma s} \left[S'_i(s)+ u_i(s)S_i\right]ds 
+  \right\}\\
+  &= e^{-\gamma t}
+ \left\{
+    I_i(0)-\int_0^t e^{\gamma s}   u_i(s)S_i(s)ds
+    -e^{\gamma t}S_i(t)+S_i(0)-\gamma\int_0^t e^{\gamma s} S_{i}(s) ds 
+  \right\}\\
+   &= e^{-\gamma t}\left(S_i(0)+ I_i(0)  \right)-S_i(t)
+   +\gamma \int_0^t e^{\gamma (s-t)}S_{i}(s)ds-\int_0^t e^{\gamma (s-t)}   u_i(s)S_i(s)ds
+ \end{split}
+\]
+
+The proof is completed by taking limit for $t\to\infty$ in previous identities and using \eqref{eq:lim-weak}. 
 \end{proof}
 
-\begin{comentario} Of course, the existence of the limit on the right hand side in equation \eqref{eq:lim-weak}   does not guarantee the existence of limit of $h(t)$ for $t\to\infty$. An example of this fact is obtained as follow. Let 
+
+\begin{conj} 
+ \[
+ \lim\limits_{t\to\infty}  u_i(s)S_i(s)
+=0.
+\]
+
+\end{conj}
+
+
+\section{Optimal control problem}
+
+
+We suppose $T>0$ a fixed time and that $ M:[0,T]\to\mathbb{R}_+$ certain given non-negative function. We consider the admissible control set
+\[\mathscr{U}=\left\{ u=\left( u_{1}, \ldots,  u_{n}\right):  u_{i}\right.\text{ measurable }, \left. u_{i} \geqslant 0,  u_{1}S_{1}+\cdots+ u_{n}S_{n}\leq M(t)\right\}.\]
+Here, $ M(t)$ represent the number of vaccines per unit of time for the total population.
+
+
+The objective function given by
+\[ J( u)=\int_{0}^{T} \sum_{i=1}^{n} I_{i}(t) d t\]
+we formulate the optimal control problem 
+\begin{equation}\label{OptimalProblem}
+\text{find}\quad  u^{*} \in \mathscr{U} \quad \text{such that}\quad 
+          J\left( u^{*}\right)=\min _{ u\in  \mathscr{U}} J( u)
+\end{equation}
+
+
+
+\section{Existence minimizers}
+
+In this Section, we prove that the optimal control problem (\ref{OptimalProblem}) has a solution. That is, we prove that the hypothesis of the Filippov-Cesari Theorem are satisfied (see \cite{A.Seierstad499}). In what follows, we will use the following notation
+$$
+x=\left(S_{1}, \ldots, S_{n}, I_{1}, \ldots, I_{n}, R_{1},\ldots, R_{n}\right)
+$$
+\[f_{0}\left(x_{i},  u_{i}, t\right)=f_{0}\left(S_{1}, \ldots, S_{1}, I_{1}\ldots, I_n, R_{1}, \cdots, R_{n} ;  u_{1}, \cdots,  u_{n} ; t\right)=\sum_{i=1}^{n} I_{i}(t).\]
+For $i=1,2,\cdots, n$, we denote by
+$$
+f_{i}=\left(f_{1 i}, f_{2 i}, f_{3 i}\right), \quad  f=\left(f_{1}, \ldots, f_{n}\right) 
+$$
+with
+\[f_{1 i}=\mu N_{i}-S_{i}(t) \sum_{j=1}^{n} \beta_{i} I_{j}(t)-\delta  u_{i} S_{i}(t)-d S_{i}(t)\]
+\[f_{2i}=S_{i}(t) \sum_{j=1}^{n} \beta_{i} I_{j}(t)-(d+\alpha+\gamma) I_{i}(t)\]
+\[f_{3 i}=\gamma I_{i}(t)+\delta  u_{i} S_{i}(t)-d R_{i}(t)\]
+and we define
+$$N\left(x, \mathscr{U}, t\right)=\left\{\left(f_{0}+\gamma, f\right):\, \gamma \geq 0,\,  u \in \mathscr{U}\right\}.$$
+Now, we will are in conditions to prove the following result.
+
+\todo{Demostrar el teorema de existencia para $n$ nodos y con reinfecciones
+y demografía} 
+
+\begin{thm}
+The optimal control problem (\ref{OptimalProblem}) has a solution $ u^{*} \in \mathscr{U}$.
+\end{thm}
+\begin{proof}
+We prove that $N(x, \mathscr{U}, t)$ is a convex set, for all $(x,t)$. 
+
+Let 
+$\left(a_{1}, b_{1}\right), \left(a_{2}, b_{2}\right) \in N\left(x, \mathscr{U}, t\right)$ be, then there exist $\gamma_{1}, \gamma_{2} \geq 0$ and $ u_{1},  u_2 \in  \mathscr{U}$ such that 
+$$
+\left(f_{0}\left(x,  u_{1}, t\right)+\gamma_{1} ; f\left(x,  u_{1}, t\right)\right)=\left(a_{1}, b_{1}\right) 
+$$
+and
+$$
+\left(f_{0}\left(x,  u_{2}, t\right)+\gamma_{2}, f\left(x,  u_{2}, t\right)\right)=\left(a_{2}, b_{2}\right)
+$$
+then 
+$$
+\lambda\left(a_{1}, b_{1}\right)+(1-\lambda)\left(a_{2}, b_{2}\right)=\left(\lambda a_1+(1-\lambda) a_{2}, \lambda b_{1}+(1-\lambda) b_{2}\right)
+$$
+$$
+=\left(\lambda\left(f_{0}\left(x,  u_{1}, t\right)+\gamma_{1}\right)+(1-\lambda)\left(f_{0}\left(x_{1},  u_{2}, t\right)+\gamma_{2}\right), \lambda f\left(x,  u_{1}, t\right)+(1-\lambda) f\left(x, u_{2}, t\right)\right).
+$$
+Now, we consider the second component
+$$
+\lambda f\left(x,  u_{1}, t\right)+(1-\lambda) f\left(x,  u_{2}, t\right)
+$$
+and from the linearity of $f$ with respect $ u$, we have 
+\[\lambda f\left(x,  u_{1}, t\right)+(1-\lambda) f\left(x,  u_{2}, t\right)=f\left(x, \lambda  u_{1}+(1-\lambda)  u_{2}, t\right)\]
+Moreover, $\overline{ u}=\lambda  u_{1}+(1-\lambda)  u_{2} \in \mathscr{U}$. In fact, $\lambda  u_{1}+(1-\lambda)  u_{2}$ is measurable, $\lambda  u_{1}+(1-\lambda)  u_{2} \geqslant 0$ and if we consider
+$ u_{1}=\left( u_{11}, \ldots \ldots,  u_{1 n}\right)$ and $  u_{2}=\left( u_{21} \ldots \ldots  u_{2 n}\right)$ in $\mathscr{U}$, then
+\[
+\lambda  u_{1}+(1-\lambda)  u_{2}=\left(\lambda  u_{11}+(1-\lambda)  u_{21}, \ldots,\lambda  u_{1 n}+(1-\lambda)  u_{2 n}\right)
+\]
+next
+$$
+\begin{array}{l}
+\left(\lambda  u_{11}+(1-\lambda)  u_{21}\right)S_{1}+\cdots+\left(\lambda  u_{1n}+(1-\lambda)  u_{2n}\right)S_{n}=\\
+\lambda\left( u_{11}S_{1}+\cdots+ u_{1 n}S_{n}\right)+(1-\lambda)\left( u_{21}S_{1}+\cdots+\tau_{2 n}S_{n}\right)\leq { u}_{Tot}
+\end{array}
+$$
+therefore $\lambda  u_{1}+(1-\lambda)  u_{2}\in \mathscr{U}$.
+
+Now, we prove that there exists $\gamma \geq 0$ such that
+$$f_{0}\left(x, \overline{ u}, t\right)+\gamma=\lambda a_{1}+(1-\lambda) a_{2}.$$
+We note that $f_0$ is constant with respect to the control variable, then
+$$
+f_{0}\left(x, \lambda  u_{1}+(1-\lambda)  u_{2}, t\right)=\lambda f_{0}\left(x,  u_{1}, t\right)+(1-\lambda) f_{0}\left(x,  u_{2}, t\right).
+$$
+If we define $\gamma=\lambda \gamma_{1}+(1-\lambda) \gamma_{2} \geq 0$, we have that
+$$
+\begin{aligned}
+f_{0}\left(x,\lambda  u_{1}+(1-\lambda)  u_{2}, t\right)+\gamma &=\left[\lambda f_{0}\left(x, u_{1}, t\right)+(1-\lambda) f_{0}\left(x,  u_{2}, t\right)\right]+\left[(\lambda \gamma_{1}+(1-\lambda) \gamma_{2}\right] \\
+&=\lambda f_{0}\left(x, u_{1}, t\right)+\lambda \gamma_{1}+(1-\lambda) f_{0}\left(x,  u_{2}, t\right)+(1-\lambda) \gamma_{2} \\
+&=\lambda\left(f_{0}\left(x,  u_{1}, t\right)+\gamma_{1}\right)+(1-\lambda)\left(f_{0}\left(x,  u_{2}, t\right)+\gamma_{2}\right) \\
+&=\lambda a_{1}+(1-\lambda) a_{2}.
+\end{aligned}
+$$
+Therefore, we proved that there exists 
+$\gamma=\lambda \gamma_{1}+(1-\lambda) \gamma_{2} \geq 0$ and there exists $\overline{ u}=\lambda  u_{1}+(1-\lambda)  u_{2} \in \mathscr{U}$
+such that 
+$$\left(\lambda {a_{1}}+(1-\lambda) {a_{2}}, \lambda b_{1}+(1-\lambda) b_{2}\right)=\left(f_{0}\left(x, \overline{ u}, t\right)+\gamma , f\left(x, \overline{ u}, t\right)\right),$$
+i.e.
+$$\left(\lambda a_{1}+(1-\lambda) a_{2}, \lambda b_{1}+(1-\lambda) b_{2}\right) \in N\left(x, \mathscr{U}, t\right)$$
+and $N\left(x, \mathscr{U}, t\right)$ is a convex set, for all fixed $(x,t)$.
+
+Moreover, $\mathscr{U}$ is a compact set, since $0 \leq  u_{i} \leq  u_{\text {Tot }}, \forall i=1, \ldots, n$. Finally, taking into account that the number of susceptible, infected and removed individuals are bounded by the total quantity of individuals, we have that $\|x(t)\| \leqslant b$. Therefore, we have verified the hypothesis of Filippov-Cesari Existence Theorem and the thesis holds.
+\end{proof}
+
+\section{Necessary conditions}
+
+In this Section, we apply the Pontryagin Maximum Principle \cite[Th. 4.1]{A.Seierstad499}, \cite{hartl1995survey} for to  obtain necessary conditions  in order to $(\bm{x}^*,\bm{u}^*)=(\bm{S}^*,\bm{I}^*,\bm{u}^*)$ be a solution of the optimal problem 
+
+
+\begin{subequations}
+\makeatletter
+\def\@currentlabel{OP}
+\makeatother
+\label{eq:optimal_model}
+\renewcommand{\theequation}{OP${}_\arabic{equation}$}
+\begin{empheq}[left=\empheqlbrace]{align}
+              &\min _{ u} \int_{0}^{T} \sum_{i=1}^{n} I_{i}(t) d t \\
+\text{s. t. } & \notag \\ 
+                & \bm{S}'=\bm{f}_{\bm{S}}(\bm{S},\bm{I},\bm{u})=\nu\bm{N}-\bm{S}\times (\bm{\beta}\bm{I}+\bm{u})-\nu\bm{S}-\alpha\bm{I}\\
+                &\bm{I}'=\bm{f}_{\bm{I}}(\bm{S},\bm{I},\bm{u})=\bm{S}\times \bm{\beta}\bm{I}-(\mu+\gamma)\bm{I}.\\
+                & \bm{S}(0)=\bm{S}_0,\quad \bm{I}(0)=\bm{I}_0\\
+                & \bm{S}(T),\quad \bm{I}(T),\quad\text{free}\notag\\
+                & \bm{u}\cdot \bm{S}\leq M(t)\\
+                & \bm{u}\geq 0 
+\end{empheq} 
+\end{subequations}
+As is well known the maximun principle involves the Hamiltonian formulation of the optimal problem. We consider \emph{adjoint variables}, $\bm{p}_S(t)=(p_{S1}(t),\ldots,p_{Sn}(t))$ and $\bm{p}_I(t)=(p_{I1}(t),\ldots,p_{In}(t))$ and the Hamiltonian function defined by
+\begin{empheq}{multline}\label{eq:hamiltoniano}
+\mathscr{H}(\bm{S},\bm{I},\bm{u},\bm{p}_S,\bm{p}_I)=
+-p_0 \sum_{i=1}^{n} I_{i}  
+ +\bm{p}_{S}\cdot \bm{f}_{\bm{S}}(\bm{S},\bm{I},\bm{u})+ \bm{p}_I\cdot \bm{f}_{\bm{I}}(\bm{S},\bm{I},\bm{u}),
+\end{empheq} 
+where $p_0\in\mathbb{R}$ is independent of $t$. It is necessary to introduce  new multipliers $q_0(t)$ and $\bm{q}(t)=(q_1(t),\ldots,q_n(t))$ associated with each constraint and the  \emph{Lagrangian} or \emph{generalized Hamiltonian} $\mathscr{L}$ defined by
+\begin{empheq}{equation}\label{eq:lagrangiano_generalizado}
+\mathscr{L}(\bm{S},\bm{I},\bm{u},\bm{p}_S,\bm{p}_I,\bm{q})=\mathscr{H}(\bm{S},\bm{I},\bm{u},\bm{p}_S,\bm{p}_I)+\bm{q}\cdot \bm{u}-q_0 \bm{u}\cdot \bm{S}.
+\end{empheq} 
+
+We suppose that $(\bm{S}^*,\bm{I}^{*},  \bm{u}^{*})$ is a  solution of \eqref{eq:optimal_model}. From now on any function evaluated at  $(\bm{S}^*,\bm{I}^{*},  \bm{u}^{*})$  will be indicated with a $\ast$ as superscript.
+
+We combine the restrictions in a vector valued function 
+$$\bm{h}(\bm{S},\bm{u},t)=(\bm{u}_1,\ldots, \bm{u}_n,-\bm{u}\cdot \bm{S}+M(t)).$$
+Then, the constraints are expressed synthetically $\bm{h}\geq \bm{0}$, where order relations between vectors mean that these relations are given component by component. Following  to be able to apply the Maximum Principle  it is necessary that they satisfy the  
+According to \cite[Th. 4.1]{A.Seierstad499}, see also \cite{hartl1995survey}, in order to apply the maximum principle, the  constraint
+qualification condition must be satisfied. This condition  means that the gradients of the active constraints ( this is $ \{i :h_i=0\}$) are linearly. In our case, the following condition must be satisfied
+
+\begin{equation}\label{eq:cons_qua}
+n+1=
+ \operatorname{rank}
+                    \left[
+                    \begin{array}{c c c|c c c c }
+                      1      & \cdots & 0      & u_1    & \cdots& 0 &  0       \\
+                      \vdots & \ddots & \vdots & \vdots & \ddots&\vdots & \vdots   \\
+                      0      & \cdots & 1      & 0 &\cdots &  u_n   &   0      \\                                  
+                      -S_1   &\cdots  & -S_n      & 0      &\cdots &0 & -\bm{u}\cdot \bm{S}+M(t)\\
+                     \end{array}
+                    \right]
+\end{equation}
+We note that if $-\bm{u}\cdot \bm{S}+M(t)\neq 0$ then then qualification condition follows inmediately. In the case that   $-\bm{u}\cdot \bm{S}+M(t)= 0$ (last constraint active) we can  prove  that  the matrix en the rhs of  \eqref{eq:cons_qua} can be row reduced to
+\begin{equation*}\label{eq:cons_qua}
+                    \left[
+                    \begin{array}{c c c|c c c c }
+                      1      & \cdots & 0      & u_1    & \cdots& 0 &  0       \\
+                      \vdots & \ddots & \vdots & \vdots & \ddots&\vdots & \vdots   \\
+                      0      & \cdots & 1      & 0 &\cdots &  u_n   &   0      \\                                  
+                      0   &\cdots  & 0      & u_1S_1      &\cdots & u_nS_n & 0\\
+                     \end{array}
+                    \right].
+\end{equation*}
+Since $-\bm{u}\cdot \bm{S}+M(t)= 0$, there is some $i$ with $u_iS_i\neq 0$. This implies that matrix has completed rank. 
+
+We are in a position to apply the maximum principle. First we observe 
+that in virtue of  equations (29), 
+(34) and (35c) in \cite[Th. 4.1]{A.Seierstad499} we can assume  that 
+$p_0=1$ in \eqref{eq:hamiltoniano}. On the other hand, we infer that 
+there exist
+functions $ \bm{p}^\ast_S,\bm{p}^\ast_I:[0,T]\to\mathbb{R}^n$
+ and 
+\emph{multipliers} $\bm{q}=(q_0(t),\ldots,q_n(t))\in\mathbb{R}^{n+1}$ 
+such that  the following 
+conditions are satisfied
+
+\noindent 1.\emph{ Adjoint equations}
+ 
+ \begin{subequations}
+\makeatletter
+\def\@currentlabel{ADJ}
+\makeatother
+\label{eq:estado_adj}
+\renewcommand{\theequation}{ADJ${}_\arabic{equation}$}
+\begin{empheq}[left=\empheqlbrace]{alignat=3}
+\dot{\bm{p}}_{\bm{S}} 
+    &=-\frac{\partial \mathscr{L}^\ast}{\partial \bm{S}}
+        &={\bm{p}}_{\bm{S}} \times \left(\bm{\beta} \bm{I}^\ast +\bm{u}^\ast+\nu\right) 
+            -{\bm{p}}_{\bm{I}}\times  \bm{\beta} \bm{I}+q_0\bm{u}^\ast,\label{eq:cons_adjS}\\
+\dot{\bm{p}}_{\bm{I}} 
+    &=-\frac{\partial \mathscr{L}^\ast}{\partial \bm{I}}
+        &= p_0\bm{1}+ \bm{\beta}^t\left( \bm{S}^\ast\times \left( {\bm{p}}_{\bm{S}}-  
+            {\bm{p}}_{\bm{I}} \right)\right)
+                +\alpha {\bm{p}}_{\bm{S}}+(\mu+\gamma) {\bm{p}}_{\bm{I}},\label{eq:cons_adjI}
+\end{empheq}
+\end{subequations}
+where $\bm{1}=(1,\ldots,1)\in\mathbb{R}^n$.
+ 
+
+\noindent 2.\emph{ }
+ \begin{empheq}{equation}\label{eq:L_critico}
+  0=\frac{\partial \mathscr{L}^\ast}{\partial \bm{u}}=
+  -{\bm{p}}_{\bm{S}}\times \bm{S}^\ast +\bm{q}-q_0\bm{S}^\ast
+ \end{empheq}
+
+\noindent 3.\emph{ Positivity and complementary slackness conditions } 
+ \begin{empheq}{equation}\label{eq:rest-act}
+  \bm{q}(t)\geq 0 \quad \text{ and }\quad  \bm{q}(t)\cdot 
+  \bm{h}(\bm{S}^\ast,\bm{u}^\ast, t)=0
+ \end{empheq}
+
+\noindent 4.\emph{ Terminal condition }  
+
+ \begin{empheq}{equation}\label{eq:p-values}
+  p_0=1 \quad \text{ and }\quad  \bm{p}_{\bm{S}}(T)= \bm{p}_{\bm{I}}(T)=0.
+ \end{empheq}
+
+
+\noindent 5.\emph{ Maximality. } For fix $t\in[0,T]$ and for 
+every $\bm{u}$ with  $\bm{h}(\bm{S}^\ast,\bm{u},t)\geq \bm{0}$ we have
+\begin{empheq}{align}\label{eq:maximalidad}
+\mathscr{H}(\bm{S}^\ast,\bm{I}^\ast,\bm{u}^\ast,\bm{p}_S,\bm{p}_I)\geq 
+\mathscr{H}(\bm{S}^\ast,\bm{I}^\ast,\bm{u},\bm{p}_S,\bm{p}_I)
+\end{empheq}
+
+
+
+
+\begin{cor} We suppose that $(\bm{S}^*,\bm{I}^{*},  \bm{u}^{*})$ is a  solution of \eqref{eq:optimal_model}.  Let $F(t)\subset \{1,\ldots,n\}$  be the subset of indices defined by 
+$$j\in F(t) \Longleftrightarrow \bm{p}_{\bm{S}^\ast j}(t) = p_{\text{min}}(t):=
+\min\{\bm{p}_{\bm{S}^\ast 1}(t),\ldots, \bm{p}_{\bm{S}^\ast n}(t)\}.$$
+Then 
+\begin{equation}\label{eq:cond_cont}
+     u^\ast_k(t)=0,\quad\text{for every } k\notin F(t).
+\end{equation}
+\end{cor}
+\begin{proof}
+ 
+We observe that the Hamiltonian can be written 
+
+\begin{equation}\label{eq:hamiltonian_afin}
+ \mathscr{H}(\bm{S},\bm{I},\bm{u},\bm{p}_S,\bm{p}_I)= \mathscr{H}_0(\bm{S},\bm{I},\bm{p}_S,\bm{p}_I)-
+ \bm{p}_{\bm{S}}\cdot (\bm{S}\times \bm{u}).
+\end{equation}
+Therefore  \eqref{eq:hamiltonian_afin} implies that for each $t\in[0,T]$ and for every $\bm{u}$ with  $\bm{u}\geq \bm{0}$ and $\bm{u}\cdot\bm{S}^\ast\leq M(t)$ we have
+\begin{equation}\label{eq:maximalidad2}
+  \bm{p}_{\bm{S}}\cdot (\bm{S}^\ast\times \bm{u}^\ast)\leq  \bm{p}_{\bm{S}}\cdot (\bm{S}^\ast\times \bm{u})
+\end{equation}
+Therefore for every $\bm{u}$ with  $\bm{u}\geq \bm{0}$ and $\bm{u}\cdot\bm{S}^\ast\leq M(t)$
+\[
+ \bm{p}_{\bm{S}}\cdot (\bm{S}^\ast\times \bm{u})\geq p_{\text{min}}(t) M
+\]
+
+
+Suppose that there exists $k\notin F(t)$ such that $u_k^ \ast>0$
+
+\end{proof}
+
+
+
+
+
+
+
+
+\section{Numerical results}  
+
+..........................
+
+
+\section{appendix}
+
+
+
 \[
  h=\sum_{n=0}^{\infty}\mathbbm{1}_{[n,n+\frac12]},
 \]
@@ -331,244 +656,6 @@ Taking account of \eqref{eq:sum_1}, \eqref{eq:tras_12} we infer that
 \lim\limits_{t\to\infty} \gamma \int_{0}^{t} \varphi\left(s\right)
   e^{\gamma (s-t)}ds=\frac{e^{\gamma/2}}{2(1+e^{\gamma/2})}
 \]
-
-
-\end{comentario}
-
-The following proposition to expresses the fact that epidemic is extinguished when $t\to\infty$ and, in certain sense, the total quantity of applied vaccines $ u_iS_i$ goes to zero when $t\to\infty$.   
-
-\begin{prop} 
-\[
- \lim\limits_{t\to\infty}\gamma\int_0^t  u_i(s)S_i(s)
-  e^{\gamma (s-t)}ds=I_i(\infty)=0.
-\]
-
- 
-\end{prop}
-
-\begin{proof} Adding equations \eqref{eq:SIRmv1} and \eqref{eq:SIRmv2} we obtain 
-\[
- (S_i+I_i)'=- u_iS_i-\gamma I_i\leq 0.
-\]
-Therefore  $S_i+I_i$ is a monotone non increasing function. Hence $\lim_{t\to\infty} (S_i+I_i)$ there exists. From \eqref{eq:SIRmv1} the same considerations are true for function $S_i$. Consequently there exists $\lim_{t\to\infty} S_i(t)=:S_i(\infty)$. We deduce that there exists  $\lim_{t\to\infty} I_i(t)=:I_i(\infty)$. If $I(\infty)>0$, we could choose $t_0$ large enough for that $t\geq t_0$ implies $I_i(t)>I_i(\infty)/2=:a>0$. Then $(S_i(t)+I_i(t))'\leq -\gamma I_i(t)\leq -\gamma a$. This inequality implies that $S_i(t) +I_i(t)\to -\infty$, when $t\to\infty$, which is a contradiction. Consequently $I_i(\infty)=0$. 
-
- 
-From  \eqref{eq:SIRmv2} and \eqref{eq:1order} we obtain that
-
-
-\[
-\begin{split}
- I_i(t)&=e^{-\gamma t}
- \left\{
-    I_i(0)+\int_0^t e^{\gamma s} S_{i}(s) \sum\limits_{j=1}^{n} \beta_{i j} I_{j}(s)ds
-\right\}\\
-&= e^{-\gamma t}
- \left\{
-    I_i(0)-\int_0^t e^{\gamma s} \left[S'_i(s)+ u_i(s)S_i\right]ds 
-  \right\}\\
-  &= e^{-\gamma t}
- \left\{
-    I_i(0)-\int_0^t e^{\gamma s}   u_i(s)S_i(s)ds
-    -e^{\gamma t}S_i(t)+S_i(0)-\gamma\int_0^t e^{\gamma s} S_{i}(s) ds 
-  \right\}\\
-   &= e^{-\gamma t}\left(S_i(0)+ I_i(0)  \right)-S_i(t)
-   +\gamma \int_0^t e^{\gamma (s-t)}S_{i}(s)ds-\int_0^t e^{\gamma s}   u_i(s)S_i(s)ds
- \end{split}
-\]
-
-Taking the limit for $t\to\infty$ in previous identities and using Lemma \ref{lem:lim-weak} 
-\end{proof}
-
-
-\begin{conj} 
- \[
- \lim\limits_{t\to\infty}  u_i(s)S_i(s)
-=0.
-\]
-
-\end{conj}
-
-
-\section{Optimal control problem}
-
-
-We suppose that $ u_{T}:[0,T]\to\mathbb{R}_+$ is a non-negative function. We consider the admissible control set
-\[U_{ad}=\left\{ u=\left( u_{1}, \ldots,  u_{n}\right):  u_{i}\right.\text{ measurable }, \left. u_{i} \geqslant 0,  u_{1}S_{1}+\cdots+ u_{n}S_{n}\leq u_{T}(t)\right\}.\]
-Here, $ u_{T}(t)$ represent the number of vaccines per unit of time for the total population.
-
-
-The objective function given by
-\[ J( u)=\int_{0}^{T} \sum_{i=1}^{n} I_{i}(t) d t\]
-we formulate the optimal control problem 
-\begin{equation}\label{OptimalProblem}
-\text{find}\quad  u^{*} \in U_{a d} \quad \text{such that}\quad 
-          J\left( u^{*}\right)=\min _{ u\in  U_{a d}} J( u)
-\end{equation}
-
-
-
-\section{Existence minimizers}
-
-In this Section, we prove that the optimal control problem (\ref{OptimalProblem}) has a solution. That is, we prove that the hypothesis of the Filippov-Cesari Theorem are satisfied (see \cite{A.Seierstad499}). In what follows, we will use the following notation
-$$
-x=\left(S_{1}, \ldots, S_{n}, I_{1}, \ldots, I_{n}, R_{1},\ldots, R_{n}\right)
-$$
-\[f_{0}\left(x_{i},  u_{i}, t\right)=f_{0}\left(S_{1}, \ldots, S_{1}, I_{1}\ldots, I_n, R_{1}, \cdots, R_{n} ;  u_{1}, \cdots,  u_{n} ; t\right)=\sum_{i=1}^{n} I_{i}(t).\]
-For $i=1,2,\cdots, n$, we denote by
-$$
-f_{i}=\left(f_{1 i}, f_{2 i}, f_{3 i}\right), \quad  f=\left(f_{1}, \ldots, f_{n}\right) 
-$$
-with
-\[f_{1 i}=\mu N_{i}-S_{i}(t) \sum_{j=1}^{n} \beta_{i} I_{j}(t)-\delta  u_{i} S_{i}(t)-d S_{i}(t)\]
-\[f_{2i}=S_{i}(t) \sum_{j=1}^{n} \beta_{i} I_{j}(t)-(d+\alpha+\gamma) I_{i}(t)\]
-\[f_{3 i}=\gamma I_{i}(t)+\delta  u_{i} S_{i}(t)-d R_{i}(t)\]
-and we define
-$$N\left(x, U_{a d}, t\right)=\left\{\left(f_{0}+\gamma, f\right):\, \gamma \geq 0,\,  u \in U_{a d}\right\}.$$
-Now, we will are in conditions to prove the following result.
-
-\begin{thm}
-The optimal control problem (\ref{OptimalProblem}) has a solution $ u^{*} \in U_{ad}$.
-\end{thm}
-\begin{proof}
-We prove that $N(x, U_{a d}, t)$ is a convex set, for all $(x,t)$. 
-
-Let 
-$\left(a_{1}, b_{1}\right), \left(a_{2}, b_{2}\right) \in N\left(x, U_{a d}, t\right)$ be, then there exist $\gamma_{1}, \gamma_{2} \geq 0$ and $ u_{1},  u_2 \in  U_{a d}$ such that 
-$$
-\left(f_{0}\left(x,  u_{1}, t\right)+\gamma_{1} ; f\left(x,  u_{1}, t\right)\right)=\left(a_{1}, b_{1}\right) 
-$$
-and
-$$
-\left(f_{0}\left(x,  u_{2}, t\right)+\gamma_{2}, f\left(x,  u_{2}, t\right)\right)=\left(a_{2}, b_{2}\right)
-$$
-then 
-$$
-\lambda\left(a_{1}, b_{1}\right)+(1-\lambda)\left(a_{2}, b_{2}\right)=\left(\lambda a_1+(1-\lambda) a_{2}, \lambda b_{1}+(1-\lambda) b_{2}\right)
-$$
-$$
-=\left(\lambda\left(f_{0}\left(x,  u_{1}, t\right)+\gamma_{1}\right)+(1-\lambda)\left(f_{0}\left(x_{1},  u_{2}, t\right)+\gamma_{2}\right), \lambda f\left(x,  u_{1}, t\right)+(1-\lambda) f\left(x, u_{2}, t\right)\right).
-$$
-Now, we consider the second component
-$$
-\lambda f\left(x,  u_{1}, t\right)+(1-\lambda) f\left(x,  u_{2}, t\right)
-$$
-and from the linearity of $f$ with respect $ u$, we have 
-\[\lambda f\left(x,  u_{1}, t\right)+(1-\lambda) f\left(x,  u_{2}, t\right)=f\left(x, \lambda  u_{1}+(1-\lambda)  u_{2}, t\right)\]
-Moreover, $\overline{ u}=\lambda  u_{1}+(1-\lambda)  u_{2} \in U_{ad}$. In fact, $\lambda  u_{1}+(1-\lambda)  u_{2}$ is measurable, $\lambda  u_{1}+(1-\lambda)  u_{2} \geqslant 0$ and if we consider
-$ u_{1}=\left( u_{11}, \ldots \ldots,  u_{1 n}\right)$ and $  u_{2}=\left( u_{21} \ldots \ldots  u_{2 n}\right)$ in $U_{ad}$, then
-\[
-\lambda  u_{1}+(1-\lambda)  u_{2}=\left(\lambda  u_{11}+(1-\lambda)  u_{21}, \ldots,\lambda  u_{1 n}+(1-\lambda)  u_{2 n}\right)
-\]
-next
-$$
-\begin{array}{l}
-\left(\lambda  u_{11}+(1-\lambda)  u_{21}\right)S_{1}+\cdots+\left(\lambda  u_{1n}+(1-\lambda)  u_{2n}\right)S_{n}=\\
-\lambda\left( u_{11}S_{1}+\cdots+ u_{1 n}S_{n}\right)+(1-\lambda)\left( u_{21}S_{1}+\cdots+\tau_{2 n}S_{n}\right)\leq { u}_{Tot}
-\end{array}
-$$
-therefore $\lambda  u_{1}+(1-\lambda)  u_{2}\in U_{ad}$.
-
-Now, we prove that there exists $\gamma \geq 0$ such that
-$$f_{0}\left(x, \overline{ u}, t\right)+\gamma=\lambda a_{1}+(1-\lambda) a_{2}.$$
-We note that $f_0$ is constant with respect to the control variable, then
-$$
-f_{0}\left(x, \lambda  u_{1}+(1-\lambda)  u_{2}, t\right)=\lambda f_{0}\left(x,  u_{1}, t\right)+(1-\lambda) f_{0}\left(x,  u_{2}, t\right).
-$$
-If we define $\gamma=\lambda \gamma_{1}+(1-\lambda) \gamma_{2} \geq 0$, we have that
-$$
-\begin{aligned}
-f_{0}\left(x,\lambda  u_{1}+(1-\lambda)  u_{2}, t\right)+\gamma &=\left[\lambda f_{0}\left(x, u_{1}, t\right)+(1-\lambda) f_{0}\left(x,  u_{2}, t\right)\right]+\left[(\lambda \gamma_{1}+(1-\lambda) \gamma_{2}\right] \\
-&=\lambda f_{0}\left(x, u_{1}, t\right)+\lambda \gamma_{1}+(1-\lambda) f_{0}\left(x,  u_{2}, t\right)+(1-\lambda) \gamma_{2} \\
-&=\lambda\left(f_{0}\left(x,  u_{1}, t\right)+\gamma_{1}\right)+(1-\lambda)\left(f_{0}\left(x,  u_{2}, t\right)+\gamma_{2}\right) \\
-&=\lambda a_{1}+(1-\lambda) a_{2}.
-\end{aligned}
-$$
-Therefore, we proved that there exists 
-$\gamma=\lambda \gamma_{1}+(1-\lambda) \gamma_{2} \geq 0$ and there exists $\overline{ u}=\lambda  u_{1}+(1-\lambda)  u_{2} \in U_{ad}$
-such that 
-$$\left(\lambda {a_{1}}+(1-\lambda) {a_{2}}, \lambda b_{1}+(1-\lambda) b_{2}\right)=\left(f_{0}\left(x, \overline{ u}, t\right)+\gamma , f\left(x, \overline{ u}, t\right)\right),$$
-i.e.
-$$\left(\lambda a_{1}+(1-\lambda) a_{2}, \lambda b_{1}+(1-\lambda) b_{2}\right) \in N\left(x, U_{ad}, t\right)$$
-and $N\left(x, U_{a d}, t\right)$ is a convex set, for all fixed $(x,t)$.
-
-Moreover, $U_{ad}$ is a compact set, since $0 \leq  u_{i} \leq  u_{\text {Tot }}, \forall i=1, \ldots, n$. Finally, taking into account that the number of susceptible, infected and removed individuals are bounded by the total quantity of individuals, we have that $\|x(t)\| \leqslant b$. Therefore, we have verified the hypothesis of Filippov-Cesari Existence Theorem and the thesis holds.
-\end{proof}
-
-\section{Optimality system}
-
-In this Section, we obtain the optimality system, which is derived of the Pontryagin Maximum Principle. We define the Lagrangian by
-\[
-L=\sum_{i=1}^{n} I_{i}(t).
-\]
-Then the problem \eqref{OptimalProblem} is equivalent to
-
-\begin{equation}\label{eq:problema_prin}
- \left\{
- \begin{split}
- &\operatornamewithlimits{Minimize}_{ u(t)\in A(t)}J( u) 
-\\
- &\text{Supposed: }\\
- & (S_i,I_i, u_i),i=1,\ldots,n\quad\text{satisfy}  \eqref{eq:SIRmv1}-\eqref{eq:SIRmv2}
- \end{split} \right.\tag{$P$}
-\end{equation}
-
-
-The Hamiltonian function is defined by
-\[
-H=-L+\sum_{i=1}^{n} \left[\lambda_{1i}\frac{d S_{i}}{dt}+\lambda_{2i}\frac{d I_{i}}{dt}\right] 
-\]
-where $\lambda_{1i}$ and $\lambda_{2i}$ are the adjoint variables.
-
-\begin{thm}
-Let $(S^*,I^{*},  u^{*})$ be a optimal solution for the optimal control problem \eqref{eq:problema_prin}, where $S^{*}(t)=(S_{1}^{*}(t),\cdots, S_{n}^{*}(t))$, $I^{*}(t)=(I_{1}^{*}(t),\cdots, I_{n}^{*}(t))$ and $ u^{*}(t)=( u_{1}^{*}(t),\cdots,  u_{n}^{*}(t))$. Then
-
-\begin{enumerate}
-
-
-\item There exist adjoint variables $\lambda_{1i}^*$, $\lambda_{2i}^*$  for $i=1,\cdots, n$, that satisfy
-\begin{alignat}{2}
-\frac{d\lambda_{1i}}{dt}&=-\lambda_{1i}\left(-\sum_{j=1}^{n} \beta_{i j} I_{j}(t)- u_{i}\right)-\lambda_{2i}\left(\sum_{j=1}^{n} \beta_{i j} I_{j}(t)\right) \label{lambda1} \\
-\frac{d\lambda_{2i}}{dt}&=1+\lambda_{2i}\gamma +\sum_{j=1}^n\beta_{ji}\lambda_{1j}S_j \label{lambda2} 
-\end{alignat}
-\item The adjoint variables satisfy   the terminal condition
-\begin{equation}\label{transver}
-\lambda_{1i}(T)=\lambda_{2i}(T)=0
-\end{equation}
-
-\item\label{it:3} Let $F(t)\subset \{1,\ldots,n\}$  be the subset of indices defined by
-
- 
-$$j\in F(t) \Longleftrightarrow \lambda_{1j}(t) = \min\{\lambda_{11}(t),\ldots, \lambda_{1n}(t)\}.$$
-Then 
-\begin{equation}\label{eq:cond_cont}
-     u_k(t)=0,\quad\text{for every } k\notin F(t).
-\end{equation}
-
-
-\end{enumerate}
-\end{thm}
-
-\begin{proof}  The first two items follows in a direct way from the Pontryagin Maximum Principle (see \cite[Th. 4.3]{LawrenceEvans500},\cite{Chen-2014}). In order to see item \ref{it:3} we write the Hamiltonian $H$ in the following way
- 
- $$ H(S,I,\lambda, u)=G(S,I,\lambda)-T(S,\lambda, u),$$
- 
-where $G(S,I,\lambda)$ is independet of the controls $ u$ and
- 
-$$T(S,\lambda, u):= -\sum_{i=1}^n\lambda_{1i}S_i u_i.$$
-
-
- 
-\end{proof}
-
-
-
-
-
-
-\section{Numerical results}  
-
-..........................
-
 
 
   \bibliographystyle{plain}
