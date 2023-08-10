@@ -82,19 +82,18 @@ In \cite{Chen-2014,Chen-2014b} optimal control in a metapopulation  SIR model wi
 \section{The mathematical model}
 
 \subsection{Description and consistency}
-By the consistency of the model we understand that the model presented has a solution, this is unique and that the model produces predictions consistent with the biological interpretation of the variables.
+By ``consistency'' we mean that the model has a unique solution and  that it produces predictions  for the variables according to their biological meaning.
 
-We will assume a population of $N$ individuals with a birth rate equal to $\mu$ equal to death rate. In this regard, we will assume that the behavior of the population is homogeneous, that is, any subset of individuals in the population maintains the same birth and death rates. In this way the total population $N$ is constant in time. Let's assume that this population is divided into $n$ subpopulations according to a certain criterion (geographic, social activity, number of links in a graph of a complex network, etc.). Let us compartmentalize each subpopulation into susceptible, infected, immunized individuals, $S_i$, $I_i$ and $R_i$ respectively. We consider the following network-based SIR epidemic model:
+We will assume a population of $N$ individuals  with the same birth and death rate $\mu$.  Let us suppose that this population is divided into $n$ subpopulations (or nodes) according to a certain criterion (geographic, social activity, number of links in a graph of a complex network, etc). We further divide each subpopulation into susceptible, infected and immunized individuals, $S_i$, $I_i$ and $R_i$ respectively. We consider the following network-based SIR epidemic model:
 
 \begin{empheq}[left=\empheqlbrace,]{align}\label{eq:ModeloSIR1}
     S'_{i}(t)&=\mu N_i-S_{i}(t) \sum\limits_{j=1}^{n} \beta_{i j} I_{j}(t)-  (u_{i}(t) +\mu) S_{i}(t)+\alpha R_i(t)  \\ \label{eq:ModeloSIR2}
     I'_{i}(t)&=S_{i}(t) \sum\limits_{j=1}^{n} \beta_{i j} I_{j}(t)-(\mu+\gamma) I_{i}(t)  \\ \label{eq:ModeloSIR3}
     R'_{i}(t)&=\gamma I_{i}(t)+  u_{i}(t) S_{i}(t)-(\mu+\alpha) R_{i}(t)  
 \end{empheq}
-where     $1=1,\ldots , n$ and $N_i=S_i+I_i+R_i$ is the total poblation of node $i$.   The parameters in the model have the following meanings: $\beta_{ii}$, $i=1,\ldots,n$, $\beta_{ij}$, $i\neq j$   are the transmission rates within and
-between subpopulations, respectively;  $\mu$ is the birth-death rate;  $ u_{i}(t)$ is the vaccination rate at the node $i$ at moment $t$(control variable);  $\gamma^{-1} $  is the infectious period and $\alpha^{-1} $  is the immunity period.\todo{NUEVO: Estamos permitiendo reinfecciones}
+where     $1=1,\ldots , n$ and $N_i=S_i+I_i+R_i$ is the total poblation of node $i$.   The parameters in the model have the following meanings: $\beta_{ij}$ are the transmission rate of infect individuals from patch $j$ to susceptible individuals in patch $i$;   $ u_{i}(t)$ (control variable) is the vaccination rate in node $i$ at time $t$;  $\gamma^{-1} $  is the infectious period and $\alpha^{-1} $  is the immunity period.
 
-We observe that summing, for each $i$,  equations \eqref{eq:ModeloSIR1}-\eqref{eq:ModeloSIR3} we obtain $N'_i(t)=0$, i.e. $N_i$ is time independent. Consequently we can drop equation \eqref{eq:ModeloSIR3} in the system. Therefore, in this article we use the following state equations
+We observe that summing, for each $i$, the  equations \eqref{eq:ModeloSIR1}-\eqref{eq:ModeloSIR3} we obtain $N'_i(t)=0$, i.e. $N_i$ is time independent. Consequently we can drop equation \eqref{eq:ModeloSIR3} in the system. Consequently, in this article we use the following state equations
 
 \begin{empheq}[left=\empheqlbrace]{align}\label{eq:ModeloSIRb1}
     S'_{i}(t)&=(\mu+\alpha) N_i-S_{i}(t)\left[ \sum\limits_{j=1}^{n} \beta_{i j} I_{j}(t)+ u_{i}(t) +\mu+\alpha\right] -\alpha I_i(t)\tag{$SIR_1$} \\ \label{eq:ModeloSIRb2}
@@ -111,18 +110,19 @@ We observe that summing, for each $i$,  equations \eqref{eq:ModeloSIR1}-\eqref{e
 \end{center}
 \end{figure}
 
-In order to address optimal control problems, the control variables $u_i$  should not be assumed to be smooth functions. Hence, it is pertinent to explain in what sense the set of functions $S_i,I_i$ and $R_i$, $i=1,\ldots,n$ are solutions of \eqref{eq:ModeloSIRb1}-\eqref{eq:ModeloSIRb2}. Furthermore we have to discuss conditions under which problem \eqref{eq:ModeloSIRb1}-\eqref{eq:ModeloSIRb2} well-possed.  
+In order to address optimal control problems, the control variables $u_i$   are usually assumed to be in the space $L^{\infty}$, and thus possibly these functions are not smooth. Hence, it is pertinent to explain in what sense the  functions $S_i$ and $I_i$, $i=1,\ldots,n$ are solutions of \eqref{eq:ModeloSIRb1}-\eqref{eq:ModeloSIRb2}. We must also discuss the conditions under which the initial value problem, associated to the equations \eqref{eq:ModeloSIRb1}-\eqref{eq:ModeloSIRb2}, is well-possed.  
 
 We will adopt the convention that bold symbols denote arrays objects like  vectors and matrices.
 Thus, for example, $\bm{\beta}$ denotes matrix $\{\beta_{ij}\}_{i,j=1}^n$, $\bm{S}=(S_1,\ldots,S_n)$ and so on. Given two arrays $\bm{A}$ and $\bm{B}$ we denote by $\bm{A}\times \bm{B}$ the element  wise product of $\bm{A}$ and $\bm{B}$. We write $\bm{x}=(\bm{S},\bm{I})$ and
 
 \[
     \begin{split}
-     \bm{f}_{\bm{S}}&=(\mu+\alpha)\bm{N}-\bm{S}\times (\bm{\beta}\bm{I}+\bm{u})-(\mu+\alpha)\bm{S}-\alpha\bm{I}\\
-     \bm{f}_{\bm{I}}&=\bm{S}\times \bm{\beta}\bm{I}-(\mu+\gamma)\bm{I}.\\
-     \bm{f}&=(\bm{f}_{\bm{S}},\bm{f}_{\bm{I}})
+     \bm{f}_{\bm{S}}&=(\mu+\alpha)\bm{N}-\bm{S}\times (\bm{\beta}\bm{I}+\bm{u})-(\mu+\alpha)\bm{S}-\alpha\bm{I},\\
+     \bm{f}_{\bm{I}}&=\bm{S}\times \bm{\beta}\bm{I}-(\mu+\gamma)\bm{I},\\
+     \bm{f}&=(\bm{f}_{\bm{S}},\bm{f}_{\bm{I}}),
      \end{split}
 \]
+where $\bm{\beta}\bm{I}$ denotes the usual matrix-vector product.
 
 Then the  system  \eqref{eq:ModeloSIRb1}-\eqref{eq:ModeloSIRb2} is write in compact form $\bm{x}'=\bm{f}(\bm{x},t)$. Given $\bm{x}_0\in\mathbb{R}^{2n}$ we have the corresponding initial value problem
 
@@ -133,9 +133,9 @@ Then the  system  \eqref{eq:ModeloSIRb1}-\eqref{eq:ModeloSIRb2} is write in comp
 \end{split}\tag{$E$}
 \end{empheq}
 
-One aspect that should be noted and that is often neglected in the literature is the fact that the vector field $\bm{f}$ is not continuous. This is due to the fact that, for the purposes of posing optimal control problems, the functions $u_i$ are generally assumed to be only measurable. Fortunately, we can deal with this type of equations by means of Carathéordory theory  \cite{A.F.Filippov512,EarlA.Coddington236} of differential equations.
+One aspect that should be noted and that is often neglected in the literature is the fact that the vector field $\bm{f}$ is not continuous. This is due to the fact that, for the purposes of posing optimal control problems, the functions $u_i$ are generally assumed to be in the space $L^\infty$. Fortunately, we can deal with this type of equations by means of Carathéordory theory  \cite{A.F.Filippov512,EarlA.Coddington236} of differential equations.
  
-Following \cite{A.F.Filippov512} we said that  $\bm{x}$ is a \emph{solution} of \eqref{eq:sist_compact} on an open interval $[0,a)$ if and only if $\bm{x}$ es absolutely continuous on each subinterval $[0,\alpha]\subset [0,a)$, satisfies initial condition and $\bm{x}'=\bm{f}(\bm{x},t)$  for almost everywhere $t\in (0,b)$.   Alternatively, it is equivalent to say that $\bm{x}$ satisfies the integral equation 
+Following \cite{A.F.Filippov512} we said that  $\bm{x}$ is a \emph{solution} of \eqref{eq:sist_compact} on an open interval $[0,a)$ if and only if $\bm{x}$ es absolutely continuous on each subinterval $[0,c]\subset [0,a)$, satisfies initial condition and $\bm{x}'=\bm{f}(\bm{x},t)$  for almost everywhere $t\in (0,b)$.   Alternatively, it is equivalent to say that $\bm{x}$ satisfies the integral equation 
 
 \begin{empheq}{equation}\label{eq:eq_integral}
  \bm{x}(t)=\bm{x}_0+\int_0^t\bm{f}(\bm{x},t)dt.
@@ -144,7 +144,7 @@ Following \cite{A.F.Filippov512} we said that  $\bm{x}$ is a \emph{solution} of 
 
 
 
-We note that if $u_i\in L^1([0,+\infty))$ then $\bm{f}$ is a Carathéodory function in the sense of \cite[p. 3]{A.F.Filippov512} on the domain $\Omega\times[0,+\infty)$, where $\Omega$ is an open and bounded set in $\mathbb{R}^n$. That means, $\bm{f}(\bm{x},t)$ is continuous in $\bm{x}$ for almost everywhere $t\in[0,+\infty)$,  $\bm{f}(\bm{x},t)$ is measurable in $t$ for each $\bm{x}\in\Omega$ and there exists $m\in L^1([0,+\infty))$ such that $|\bm{f}(\bm{x},t)|\leq m(t)$ for every $(\bm{x},t)\in \Omega\times[0,+\infty)$.   Consequently we can apply  existence and uniqueness theory for Carathéodory equations \cite[Th. 1, p. 4, Th. 2, p. 5]{A.F.Filippov512}, \cite[Th. 1.1]{EarlA.Coddington236},  we conclude that for any $\bm{x}_0\in \Omega$ there exists an unique local solutions of the  boundary value problem \eqref{eq:sist_compact}  defined in some interval  $[0,\delta)$, $\delta>0$.  
+We note that if $u_i\in L^1([0,+\infty))$ then $\bm{f}$ is a Carathéodory function in the sense of \cite[p. 3]{A.F.Filippov512} on the domain $\Omega\times[0,+\infty)$, where $\Omega$ is an open and bounded set in $\mathbb{R}^n$. That means, $\bm{f}(\bm{x},t)$ is continuous in $\bm{x}$ for almost everywhere $t\in[0,+\infty)$,  $\bm{f}(\bm{x},t)$ is measurable in $t$ for each $\bm{x}\in\Omega$ and there exists $m\in L^1([0,+\infty))$ such that $|\bm{f}(\bm{x},t)|\leq m(t)$ for every $(\bm{x},t)\in \Omega\times[0,+\infty)$.   Consequently we can apply  existence and uniqueness theory for Carathéodory equations \cite[Th. 1, p. 4, Th. 2, p. 5]{A.F.Filippov512}, \cite[Th. 1.1]{EarlA.Coddington236},  we conclude that for any $\bm{x}_0\in \Omega$ there exists a unique local solutions of the  boundary value problem \eqref{eq:sist_compact}  defined in some interval  $[0,\delta)$, $\delta>0$.  
 
 
 
