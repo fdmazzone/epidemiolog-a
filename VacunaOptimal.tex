@@ -112,7 +112,7 @@ We observe that summing, for each $i$, the  equations \eqref{eq:ModeloSIR1}-\eqr
 
 In order to address optimal control problems, the control variables $u_i$   are usually assumed to be in the space $L^{\infty}$, and thus possibly these functions are not smooth. Hence, it is pertinent to explain in what sense the  functions $S_i$ and $I_i$, $i=1,\ldots,n$ are solutions of \eqref{eq:ModeloSIRb1}-\eqref{eq:ModeloSIRb2}. We must also discuss the conditions under which the initial value problem, associated to the equations \eqref{eq:ModeloSIRb1}-\eqref{eq:ModeloSIRb2}, is well-possed.  
 
-We will adopt the convention that bold symbols denote arrays objects like  vectors and matrices.
+We will adopt the convention of using boldface symbols to denote objects such as vectors and matrices.
 Thus, for example, $\bm{\beta}$ denotes matrix $\{\beta_{ij}\}_{i,j=1}^n$, $\bm{S}=(S_1,\ldots,S_n)$ and so on. Given two arrays $\bm{A}$ and $\bm{B}$ we denote by $\bm{A}\times \bm{B}$ the element  wise product of $\bm{A}$ and $\bm{B}$. We write $\bm{x}=(\bm{S},\bm{I})$ and
 
 \[
@@ -124,7 +124,7 @@ Thus, for example, $\bm{\beta}$ denotes matrix $\{\beta_{ij}\}_{i,j=1}^n$, $\bm{
 \]
 where $\bm{\beta}\bm{I}$ denotes the usual matrix-vector product.
 
-Then the  system  \eqref{eq:ModeloSIRb1}-\eqref{eq:ModeloSIRb2} is write in compact form $\bm{x}'=\bm{f}(\bm{x},t)$. Given $\bm{x}_0\in\mathbb{R}^{2n}$ we have the corresponding initial value problem
+Then the  system  \eqref{eq:ModeloSIRb1}-\eqref{eq:ModeloSIRb2} is written in compact form $\bm{x}'=\bm{f}(\bm{x},t)$. Given $\bm{x}_0\in\mathbb{R}^{2n}$ we have the corresponding initial value problem
 
 \begin{empheq}[left=\empheqlbrace]{equation}\label{eq:sist_compact}
 \begin{split}
@@ -133,9 +133,9 @@ Then the  system  \eqref{eq:ModeloSIRb1}-\eqref{eq:ModeloSIRb2} is write in comp
 \end{split}\tag{$E$}
 \end{empheq}
 
-One aspect that should be noted and that is often neglected in the literature is the fact that the vector field $\bm{f}$ is not continuous. This is due to the fact that, for the purposes of posing optimal control problems, the functions $u_i$ are generally assumed to be in the space $L^\infty$. Fortunately, we can deal with this type of equations by means of Carathéordory theory  \cite{A.F.Filippov512,EarlA.Coddington236} of differential equations.
+One aspect that should be noted and that is often neglected in the literature is the fact that the vector field $\bm{f}$ is not continuous. This is because in optimal control problems it is usually assumed that the control functions $u_i$ are in the space $L^\infty$. Fortunately, we can deal with this type of equations by means of Carathéordory theory  \cite{A.F.Filippov512,EarlA.Coddington236} of differential equations.
  
-Following \cite{A.F.Filippov512} we said that  $\bm{x}$ is a \emph{solution} of \eqref{eq:sist_compact} on an open interval $[0,a)$ if and only if $\bm{x}$ es absolutely continuous on each subinterval $[0,c]\subset [0,a)$, satisfies initial condition and $\bm{x}'=\bm{f}(\bm{x},t)$  for almost everywhere $t\in (0,b)$.   Alternatively, it is equivalent to say that $\bm{x}$ satisfies the integral equation 
+Following \cite{A.F.Filippov512} we said that  $\bm{x}$ is a \emph{solution} of \eqref{eq:sist_compact} on an  interval $[0,a)$ if and only if $\bm{x}$ is absolutely continuous on each subinterval $[0,c]\subset [0,a)$, it satisfies initial condition and $\bm{x}'=\bm{f}(\bm{x},t)$  for almost everywhere $t\in (0,a)$.   Alternatively, it is equivalent to say that $\bm{x}$ satisfies the integral equation 
 
 \begin{empheq}{equation}\label{eq:eq_integral}
  \bm{x}(t)=\bm{x}_0+\int_0^t\bm{f}(\bm{x},t)dt.
@@ -144,7 +144,7 @@ Following \cite{A.F.Filippov512} we said that  $\bm{x}$ is a \emph{solution} of 
 
 
 
-We note that if $u_i\in L^1([0,+\infty))$ then $\bm{f}$ is a Carathéodory function in the sense of \cite[p. 3]{A.F.Filippov512} on the domain $\Omega\times[0,+\infty)$, where $\Omega$ is an open and bounded set in $\mathbb{R}^n$. That means, $\bm{f}(\bm{x},t)$ is continuous in $\bm{x}$ for almost everywhere $t\in[0,+\infty)$,  $\bm{f}(\bm{x},t)$ is measurable in $t$ for each $\bm{x}\in\Omega$ and there exists $m\in L^1([0,+\infty))$ such that $|\bm{f}(\bm{x},t)|\leq m(t)$ for every $(\bm{x},t)\in \Omega\times[0,+\infty)$.   Consequently we can apply  existence and uniqueness theory for Carathéodory equations \cite[Th. 1, p. 4, Th. 2, p. 5]{A.F.Filippov512}, \cite[Th. 1.1]{EarlA.Coddington236},  we conclude that for any $\bm{x}_0\in \Omega$ there exists a unique local solutions of the  boundary value problem \eqref{eq:sist_compact}  defined in some interval  $[0,\delta)$, $\delta>0$.  
+We note that if $u_i\in L^1([0,+\infty))$ then $\bm{f}$ is a Carathéodory function in the sense of \cite[p. 3]{A.F.Filippov512} on the domain $\Omega\times[0,+\infty)$, where $\Omega$ is an open and bounded set in $\mathbb{R}^{2n}$. That means, $\bm{f}(\bm{x},t)$ is continuous in $\bm{x}$ for almost everywhere $t\in[0,+\infty)$,  $\bm{f}(\bm{x},t)$ is measurable in $t$ for each $\bm{x}\in\Omega$ and there exists $m\in L^1([0,+\infty))$ such that $|\bm{f}(\bm{x},t)|\leq m(t)$ for every $(\bm{x},t)\in \Omega\times[0,+\infty)$.   Consequently we can apply  existence and uniqueness theory for Carathéodory equations \cite[Th. 1, p. 4, Th. 2, p. 5]{A.F.Filippov512}, \cite[Th. 1.1]{EarlA.Coddington236},  we conclude that for any $\bm{x}_0\in \Omega$ there exists a unique local solutions of the  boundary value problem \eqref{eq:sist_compact}  defined in some interval  $[0,\delta)$, $\delta>0$.  
 
 
 
@@ -183,10 +183,9 @@ I_i(t)= \exp\left(- (\mu+\gamma)t \right)
 \right\} 
 \end{empheq}
 
-Equations \eqref{eq:eq_integralS}-\eqref{eq:eq_integralI} have the advantage that they are valid for every $t\geq 0$  while equations \eqref{eq:ModeloSIRb1}-\eqref{eq:ModeloSIRb2} holds true almost everywhere. 
+Equations \eqref{eq:eq_integralS}-\eqref{eq:eq_integralI} have the advantage that they are valid for every $t\geq 0$  while the equations \eqref{eq:ModeloSIRb1}-\eqref{eq:ModeloSIRb2} holds true almost everywhere. 
 
-Although from a mathematical point of view the problem \eqref{eq:sist_compact}    
- makes sense for any  $\bm{x}$ it is only relevant for our model  in the closed set   
+Although the problem \eqref{eq:sist_compact} makes mathematical sense for any $\bm{x}$ it is only relevant, from an epidemiological point of view, in the closed set
 \[
  \Omega_0=\left\{\bm{x}\in\mathbb{R}^{2n}|  0\leq x_i,x_{n+i}\leq N_i, i=1,\ldots,n\right\}.
 \]
