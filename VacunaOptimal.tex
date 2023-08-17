@@ -81,17 +81,18 @@ In \cite{Chen-2014,Chen-2014b} optimal control in a metapopulation  SIR model wi
  
 \section{The mathematical model}
 
+
 \subsection{Description and consistency}
 By ``consistency'' we mean that the model has a unique solution and  that it produces predictions  for the variables according to their biological meaning.
 
-We will assume a population of $N$ individuals  with the same birth and death rate $\mu$.  Let us suppose that this population is divided into $n$ subpopulations (or nodes) according to a certain criterion (geographic, social activity, number of links in a graph of a complex network, etc). We further divide each subpopulation into susceptible, infected and immunized individuals, $S_i$, $I_i$ and $R_i$ respectively. We consider the following network-based SIR epidemic model:
+We will assume a population of $N$ individuals  with the same birth and death rate $\mu\geq 0$.  Let us suppose that this population is divided into $n$ subpopulations (or nodes) according to a certain criterion (geographic, social activity, number of links in a graph of a complex network, etc). We further divide each subpopulation into susceptible, infected and immunized individuals, $S_i$, $I_i$ and $R_i$ respectively. We consider the following network-based SIR epidemic model:
 
 \begin{empheq}[left=\empheqlbrace,]{align}\label{eq:ModeloSIR1}
     S'_{i}(t)&=\mu N_i-S_{i}(t) \sum\limits_{j=1}^{n} \beta_{i j} I_{j}(t)-  (u_{i}(t) +\mu) S_{i}(t)+\alpha R_i(t)  \\ \label{eq:ModeloSIR2}
     I'_{i}(t)&=S_{i}(t) \sum\limits_{j=1}^{n} \beta_{i j} I_{j}(t)-(\mu+\gamma) I_{i}(t)  \\ \label{eq:ModeloSIR3}
     R'_{i}(t)&=\gamma I_{i}(t)+  u_{i}(t) S_{i}(t)-(\mu+\alpha) R_{i}(t)  
 \end{empheq}
-where     $1=1,\ldots , n$ and $N_i=S_i+I_i+R_i$ is the total poblation of node $i$.   The parameters in the model have the following meanings: $\beta_{ij}$ are the transmission rate of infect individuals from patch $j$ to susceptible individuals in patch $i$;   $ u_{i}(t)$ (control variable) is the vaccination rate in node $i$ at time $t$;  $\gamma^{-1} $  is the infectious period and $\alpha^{-1} $  is the immunity period.
+where     $1=1,\ldots , n$ and $N_i=S_i+I_i+R_i$ is the total poblation of node $i$.   The parameters in the model have the following meanings: $\beta_{ij}\geq 0$ are the transmission rate of infect individuals from patch $j$ to susceptible individuals in patch $i$;   $ u_{i}(t)\geq 0$ (control variable) is the vaccination rate in node $i$ at time $t$;  $\gamma^{-1} >0$  is the infectious period and $\alpha^{-1} >0$  is the immunity period ( we agree that $\alpha^{-1}=\infty$ when $\alpha=0$).
 
 We observe that summing, for each $i$, the  equations \eqref{eq:ModeloSIR1}-\eqref{eq:ModeloSIR3} we obtain $N'_i(t)=0$, i.e. $N_i$ is time independent. Consequently we can drop equation \eqref{eq:ModeloSIR3} in the system. Consequently, in this article we use the following state equations
 
@@ -112,7 +113,7 @@ We observe that summing, for each $i$, the  equations \eqref{eq:ModeloSIR1}-\eqr
 
 In order to address optimal control problems, the control variables $u_i$   are usually assumed to be in the space $L^{\infty}$, and thus possibly these functions are not smooth. Hence, it is pertinent to explain in what sense the  functions $S_i$ and $I_i$, $i=1,\ldots,n$ are solutions of \eqref{eq:ModeloSIRb1}-\eqref{eq:ModeloSIRb2}. We must also discuss the conditions under which the initial value problem, associated to the equations \eqref{eq:ModeloSIRb1}-\eqref{eq:ModeloSIRb2}, is well-possed.  
 
-We will adopt the convention that bold symbols denote arrays objects like  vectors and matrices.
+We will adopt the convention of using boldface symbols to denote objects such as vectors and matrices.
 Thus, for example, $\bm{\beta}$ denotes matrix $\{\beta_{ij}\}_{i,j=1}^n$, $\bm{S}=(S_1,\ldots,S_n)$ and so on. Given two arrays $\bm{A}$ and $\bm{B}$ we denote by $\bm{A}\times \bm{B}$ the element  wise product of $\bm{A}$ and $\bm{B}$. We write $\bm{x}=(\bm{S},\bm{I})$ and
 
 \[
@@ -124,7 +125,7 @@ Thus, for example, $\bm{\beta}$ denotes matrix $\{\beta_{ij}\}_{i,j=1}^n$, $\bm{
 \]
 where $\bm{\beta}\bm{I}$ denotes the usual matrix-vector product.
 
-Then the  system  \eqref{eq:ModeloSIRb1}-\eqref{eq:ModeloSIRb2} is write in compact form $\bm{x}'=\bm{f}(\bm{x},t)$. Given $\bm{x}_0\in\mathbb{R}^{2n}$ we have the corresponding initial value problem
+Then the  system  \eqref{eq:ModeloSIRb1}-\eqref{eq:ModeloSIRb2} is written in compact form $\bm{x}'=\bm{f}(\bm{x},t)$. Given $\bm{x}_0\in\mathbb{R}^{2n}$ we have the corresponding initial value problem
 
 \begin{empheq}[left=\empheqlbrace]{equation}\label{eq:sist_compact}
 \begin{split}
@@ -133,9 +134,9 @@ Then the  system  \eqref{eq:ModeloSIRb1}-\eqref{eq:ModeloSIRb2} is write in comp
 \end{split}\tag{$E$}
 \end{empheq}
 
-One aspect that should be noted and that is often neglected in the literature is the fact that the vector field $\bm{f}$ is not continuous. This is due to the fact that, for the purposes of posing optimal control problems, the functions $u_i$ are generally assumed to be in the space $L^\infty$. Fortunately, we can deal with this type of equations by means of Carathéordory theory  \cite{A.F.Filippov512,EarlA.Coddington236} of differential equations.
+One aspect that should be noted and that is often neglected in the literature is the fact that the vector field $\bm{f}$ is not continuous. This is because in optimal control problems it is usually assumed that the control functions $u_i$ are in the space $L^\infty$. Fortunately, we can deal with this type of equations by means of Carathéordory theory  \cite{A.F.Filippov512,EarlA.Coddington236} of differential equations.
  
-Following \cite{A.F.Filippov512} we said that  $\bm{x}$ is a \emph{solution} of \eqref{eq:sist_compact} on an open interval $[0,a)$ if and only if $\bm{x}$ es absolutely continuous on each subinterval $[0,c]\subset [0,a)$, satisfies initial condition and $\bm{x}'=\bm{f}(\bm{x},t)$  for almost everywhere $t\in (0,b)$.   Alternatively, it is equivalent to say that $\bm{x}$ satisfies the integral equation 
+Following \cite{A.F.Filippov512} we said that  $\bm{x}$ is a \emph{solution} of \eqref{eq:sist_compact} on an  interval $[0,a)$ if and only if $\bm{x}$ is absolutely continuous on each subinterval $[0,c]\subset [0,a)$, it satisfies initial condition and $\bm{x}'=\bm{f}(\bm{x},t)$  for almost everywhere $t\in (0,a)$.   Alternatively, it is equivalent to say that $\bm{x}$ satisfies the integral equation 
 
 \begin{empheq}{equation}\label{eq:eq_integral}
  \bm{x}(t)=\bm{x}_0+\int_0^t\bm{f}(\bm{x},t)dt.
@@ -144,7 +145,7 @@ Following \cite{A.F.Filippov512} we said that  $\bm{x}$ is a \emph{solution} of 
 
 
 
-We note that if $u_i\in L^1([0,+\infty))$ then $\bm{f}$ is a Carathéodory function in the sense of \cite[p. 3]{A.F.Filippov512} on the domain $\Omega\times[0,+\infty)$, where $\Omega$ is an open and bounded set in $\mathbb{R}^n$. That means, $\bm{f}(\bm{x},t)$ is continuous in $\bm{x}$ for almost everywhere $t\in[0,+\infty)$,  $\bm{f}(\bm{x},t)$ is measurable in $t$ for each $\bm{x}\in\Omega$ and there exists $m\in L^1([0,+\infty))$ such that $|\bm{f}(\bm{x},t)|\leq m(t)$ for every $(\bm{x},t)\in \Omega\times[0,+\infty)$.   Consequently we can apply  existence and uniqueness theory for Carathéodory equations \cite[Th. 1, p. 4, Th. 2, p. 5]{A.F.Filippov512}, \cite[Th. 1.1]{EarlA.Coddington236},  we conclude that for any $\bm{x}_0\in \Omega$ there exists a unique local solutions of the  boundary value problem \eqref{eq:sist_compact}  defined in some interval  $[0,\delta)$, $\delta>0$.  
+We note that if $u_i\in L^1([0,+\infty))$ then $\bm{f}$ is a Carathéodory function in the sense of \cite[p. 3]{A.F.Filippov512} on the domain $\Omega\times[0,+\infty)$, where $\Omega$ is an open and bounded set in $\mathbb{R}^{2n}$. That means, $\bm{f}(\bm{x},t)$ is continuous in $\bm{x}$ for almost everywhere $t\in[0,+\infty)$,  $\bm{f}(\bm{x},t)$ is measurable in $t$ for each $\bm{x}\in\Omega$ and there exists $m\in L^1([0,+\infty))$ such that $|\bm{f}(\bm{x},t)|\leq m(t)$ for every $(\bm{x},t)\in \Omega\times[0,+\infty)$.   Consequently we can apply  existence and uniqueness theory for Carathéodory equations \cite[Th. 1, p. 4, Th. 2, p. 5]{A.F.Filippov512}, \cite[Th. 1.1]{EarlA.Coddington236},  we conclude that for any $\bm{x}_0\in \Omega$ there exists a unique local solutions of the  boundary value problem \eqref{eq:sist_compact}  defined in some interval  $[0,\delta)$, $\delta>0$.  
 
 
 
@@ -156,9 +157,9 @@ We will use the following well known and elementary formula for the solution of 
 
 For $i=1,\ldots,n$ it is convenient to set
 \[
- \Theta_i(t):=\sum\limits_{j=1}^{n} \beta_{i j} I_{j}(t),\quad\nu=\mu+\alpha.
+ \Theta_i(t):=\sum\limits_{j=1}^{n} \beta_{i j} I_{j},\quad\nu=\mu+\alpha.
 \]
-Then using formula \eqref{eq:1order} we obtain that equations \eqref{eq:ModeloSIRb1}-\eqref{eq:ModeloSIRb2} are equivalent to the integral equations
+Then using formula \eqref{eq:1order} we obtain that equations \eqref{eq:ModeloSIRb1}-\eqref{eq:ModeloSIRb2} and \eqref{eq:ModeloSIR3} are equivalent to the integral equations
 
 \begin{empheq}{multline}\label{eq:eq_integralS}
 S_i(t)= \exp\left\{-\nu t- \int_0^t\Theta_i+u_ids\right\}S_i(0)\\
@@ -173,30 +174,40 @@ S_i(t)= \exp\left\{-\nu t- \int_0^t\Theta_i+u_ids\right\}S_i(0)\\
 \end{empheq}
 
 \begin{empheq}{multline}\label{eq:eq_integralI}
-I_i(t)= e^{- (\mu+\gamma)t}
+I_i(t)= \exp\left(- (\mu+\gamma)t \right)
 \left\{  
     I_i(0)+ 
-    \int_0^t e^{
-            (\mu+\gamma)s}
+    \int_0^t \exp\left(
+            (\mu+\gamma)s\right) 
             \Theta_iS_i
             ds
-\right\}. 
+\right\} 
 \end{empheq}
 
-Equations \eqref{eq:eq_integralS}-\eqref{eq:eq_integralI} have the advantage that they are valid for every $t\geq 0$  while equations \eqref{eq:ModeloSIRb1}-\eqref{eq:ModeloSIRb2} holds true almost everywhere. 
+\begin{empheq}{multline}\label{eq:eq_integralR}
+R_i(t)= \exp\left(- (\mu+\alpha)t \right)
+\left\{  
+    R_i(0)+ 
+    \int_0^t \exp\left(
+            (\mu+\alpha)s\right) 
+            (\gamma I_i +u_iS_i)
+            ds
+\right\} 
+\end{empheq}
 
-Although from a mathematical point of view the problem \eqref{eq:sist_compact}    
- makes sense for any  $\bm{x}$ it is only relevant for our model  in the closed set   
+Equations \eqref{eq:eq_integralS}-\eqref{eq:eq_integralI} have the advantage that they are valid for every $t\geq 0$  while the equations \eqref{eq:ModeloSIRb1}-\eqref{eq:ModeloSIRb2} holds true almost everywhere. 
+
+Although the problem \eqref{eq:sist_compact} makes mathematical sense for any $\bm{x}$ it is only relevant, from an epidemiological point of view, in the closed set
 \[
  \Omega_0=\left\{\bm{x}\in\mathbb{R}^{2n}|  0\leq x_i,x_{n+i}\leq N_i, i=1,\ldots,n\right\}.
 \]
-Since  $\nu N_i-\alpha I_i\geq 0$, we obtain from equations \eqref{eq:eq_integralS}-\eqref{eq:eq_integralI}  that $S_i(t), I_i(t)\geq 0$ for every $t$ where solutions are defined. On the other hand, $S_i(t)+I_i(t)\leq   N_i$. Consequently, the set $\Omega$ is flow invariant for the equation \eqref{eq:sist_compact}.  If $\Omega$ is any bounded an open set containing $\Omega_0$ and $\bm{x}_0\in\Omega_0$ we have that the solution $\bm{x}(t)$ of \eqref{eq:sist_compact} remains inside $\Omega$ for every $t>0$ where solution is defined.  We infer using continuation theory \cite[Th. 1.3]{EarlA.Coddington236} that the solition is defined for every positive time.  
+% Since  $\nu N_i-\alpha I_i\geq 0$, we obtain from equations \eqref{eq:eq_integralS}-\eqref{eq:eq_integralI}  that $S_i(t), I_i(t)\geq 0$ for every $t$ where solutions are defined. On the other hand, $S_i(t)+I_i(t)\leq   N_i$. Consequently, the set $\Omega$ is flow invariant for the equation \eqref{eq:sist_compact}.  If $\Omega$ is any bounded an open set containing $\Omega_0$ and $\bm{x}_0\in\Omega_0$ we have that the solution $\bm{x}(t)$ of \eqref{eq:sist_compact} remains inside $\Omega$ for every $t>0$ where solution is defined.  We infer using continuation theory \cite[Th. 1.3]{EarlA.Coddington236} that the solition is defined for every positive time.  
 
 
 \subsection{Propagation on the network}
 
  
-\todo[inline]{Desarrollaría un poco más, por ejemplo incluir definición de irreducibilidad, ver  por ejemplo \cite{CarlD.Meyer538} o \cite{GilbertGWalter295}. Considerar el modelos general, demografía y reinfecciones}
+
 
 In this section we aim to demonstrate a result concerning the spread of infection in the network.
 % We begin this section by establishing a result which guarantees that if  $S_i$ and $I_i$, with $i=1,2,\ldots,n$, are solution of the system of equations \eqref{eq:ModeloSIRb1}, \eqref{eq:ModeloSIRb2},  and satisfy that  $S_i(0)\geq 0$ and $I_i(0)\geq 0$ then  $S_i$ and $I_i(t)\geq 0$ 
@@ -262,7 +273,7 @@ Let $\bm{\Psi}=\{\psi_{ij}\}_{i,j=1}^n$ be a real matrix. Then, $\bm{\Psi}$ is i
 
  
 
-\begin{prop} Suppose that $\beta$ is a irreducible matrix. If $S_i(0)\geq 0$, $I_i(0)\geq 0$ for every $i\in\{1,2,\ldots,n\}$ and there exists $i_0$ such that $I_{i_0}(0)>0$ then for every $i=1,2,\ldots,n$ and $t>0$ we have $I_i(t)>0$; except in the exceptional case that  $\mu=0$, $\alpha=0$ and  there exists $i'$ such that $S_{i'}(0)=I_{i'}(0)=0$, in which case  
+\begin{prop} Suppose that $\beta$ is a irreducible matrix. If $S_i(0)\geq 0$, $I_i(0)\geq 0$, $R_i(0)\geq 0$ for every $i\in\{1,2,\ldots,n\}$ and there exists $i_0$ such that $I_{i_0}(0)>0$ then for every $i=1,2,\ldots,n$ and $t>0$ we have that $S_i(t)>0$, $I_i(t)>0$ and $R_i(t)>0$; except in the exceptional case that  $\mu=0$, $\alpha=0$ and  there exists $i'$ such that $S_{i'}(0)=I_{i'}(0)=0$, in which case  
 $S_{i'}(t)=0$ and $I_{i'}(t)=0$ for all $t\geq 0$.
 \end{prop}
  
@@ -274,9 +285,17 @@ Let's start with the exceptional case where that $\mu=0$ and $\alpha=0$ there ex
 
 Taking into account what we have mentioned above, we can assume from now on that $\mu>0$, or $\alpha>0$, or for all $i\in\{1,2,\ldots,n\}$ it is satisfied that $S_i(0)\neq 0$ or $I_i(0)\neq 0$.
 
-Before starting to analyze the previous cases note first that if $S_{i}(t)>0$ and $I_i(t)>0$ for every $i\in\{1,2,\ldots,n\}$ and $t\in (0,\delta)$, with $\delta>0$, then $S_i(t)>0$ and $I_i(t)>0$ for all $t\in (0,+\infty)$. In fact, if the last statement were not true taking $t_0:=\inf\{t\in (0,+\infty): S_i(t)<0\ \text{or}\ I_i(0)<0\}$ we have that $t_0>0$, $S_j(t_0)=0$ or $I_j(t_0)=0$ for some 
-$j\in\{1,2,\ldots,n\}$, and $S_i(t)>0$ and $I_i(t)>0$ for all $t\in (0,t_0)$. 
-Now, the last condition and formulas \eqref{eq:eq_integralS} and \eqref{eq:eq_integralI} imply that $S_i(t_0)>0$ and $I_i(t_0)>0$, which is an absurd.
+% Before starting to analyze the previous cases note first that if $S_{i}(t)>0$ and $I_i(t)>0$ for every $i\in\{1,2,\ldots,n\}$ and $t\in (0,\delta)$, with $\delta>0$, then $S_i(t)>0$ and $I_i(t)>0$ for all $t\in (0,+\infty)$. In fact, if the last statement were not true taking 
+
+Let us consider the set
+$$A:=\{t\in (0,+\infty): S_i(t)\leq 0\ \text{or}\ I_i(t)\leq 0,\ \text{for some}\ i=1,2,\ldots,n\}.$$
+It is sufficient to show that $A=\emptyset$. 
+
+Suppose that $A\neq \emptyset$ and define $t_0:=\inf A$.
+Note that  $S_j(t_0)=0$ or $I_j(t_0)=0$ for some 
+$j\in\{1,2,\ldots,n\}$.  We have two cases. 
+
+\emph{Case $t_0>0.$} In this situation we have that $S_i(t)>0$ and $I_i(t)>0$ for all $t\in (0,t_0)$ and every $i=1,2,\ldots,n$. Since $\boldsymbol{\beta}$ is an irreducible matrix we have that for every $i\in\{1,2,\ldots,n\}$ there exist $j_i$ such that $\beta_{i,j_i}>0$. Then $\Theta_i>0$ on $(0,t_0)$, which implies that the integrand in \eqref{eq:eq_integralI} is strictly positive on $(0,t_0)$. In a similar way we can conclude the same for the integrand in \eqref{eq:eq_integralR}. On the other hand the term $\nu N_i-\alpha I_i$ is also positive on $(0,t_0)$. Thus $S_j(t_0)>0$ and $I_j(t_0)>0$, which is a contradiction.
 
 
 
