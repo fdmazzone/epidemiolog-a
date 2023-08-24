@@ -196,7 +196,7 @@ R_i(t)= \exp\left(- (\mu+\alpha)t \right)
 \right\} 
 \end{empheq}
 
-
+ 
 Equations \eqref{eq:eq_integralS}-\eqref{eq:eq_integralI} have the advantage that they are valid for every $t\geq 0$  while the equations \eqref{eq:ModeloSIRb1}-\eqref{eq:ModeloSIRb2} holds true almost everywhere. 
 
 Although the problem \eqref{eq:sist_compact} makes mathematical sense for any $\bm{x}$ it is only relevant, from an epidemiological point of view, in the closed set
@@ -206,7 +206,7 @@ Although the problem \eqref{eq:sist_compact} makes mathematical sense for any $\
 % Since  $\nu N_i-\alpha I_i\geq 0$, we obtain from equations \eqref{eq:eq_integralS}-\eqref{eq:eq_integralI}  that $S_i(t), I_i(t)\geq 0$ for every $t$ where solutions are defined. On the other hand, $S_i(t)+I_i(t)\leq   N_i$. Consequently, the set $\Omega$ is flow invariant for the equation \eqref{eq:sist_compact}.  If $\Omega$ is any bounded an open set containing $\Omega_0$ and $\bm{x}_0\in\Omega_0$ we have that the solution $\bm{x}(t)$ of \eqref{eq:sist_compact} remains inside $\Omega$ for every $t>0$ where solution is defined.  We infer using continuation theory \cite[Th. 1.3]{EarlA.Coddington236} that the solition is defined for every positive time.  
 
 
-\subsection{Propagation on the network}
+\subsection{Propagation in the network}
 
  
 
@@ -236,6 +236,8 @@ Let $\bm{\Psi}=\{\psi_{ij}\}_{i,j=1}^n$ be a real matrix. We say $\bm{\Psi}$ is 
      \bm{0} &  \bm{Z}
 \end{array}\right)$, where $\bm{X}$ and $\bm{Z}$ are both square matrices. If $\bm{\Psi}$ is not \textbf{reducible} then it is \textbf{irreducible}.
 \end{defn}
+
+The following results can be seen in \cite{CarlD.Meyer538}.
 
 \begin{lem}\label{lema:Psi.irredusible<-->Grafofuert.conectado}
 Let $\bm{\Psi}=\{\psi_{ij}\}_{i,j=1}^n$ be a real matrix. Then, $\bm{\Psi}$ is irreducible if and only if for every pair $(i,j)$, with $1\leq i,j\leq n$ there exists $k_1,k_2,\ldots,k_m\in \{1,2,\ldots,n\}$ such that $\psi_{ik_1}\neq 0$, $\psi_{k_lk_{l+1}}\neq 0$ for $l=1,2,\ldots,m-1$, and $\psi_{k_mj}\neq 0$.
@@ -279,10 +281,7 @@ Let $\bm{\Psi}=\{\psi_{ij}\}_{i,j=1}^n$ be a real matrix. Then, $\bm{\Psi}$ is i
 $S_{i'}(t)=0$ and $I_{i'}(t)=0$ for all $t\geq 0$.
 \end{prop}
  
-\begin{proof} \todo[inline]{Hay que repensar la demostración para admitir soluciones que no son derivables. Hay que utlizar ecuaciones \eqref{eq:eq_integralS} -\eqref{eq:eq_integralI}.  Hagamos la demostración para el modelo full- demografía y reinfecciones. Ojo! hay un caso excepcional, cuando no hay demografía ($\mu=0$), no hay reinfección ($\alpha=0$) e inicialmente todos son recuperados $R_i(0)=N_i$}
-
-
-
+\begin{proof} 
 Let's start with the exceptional case where that $\mu=0$ and $\alpha=0$ there exists $i'$ such that $S_{i'}(0)=I_{i'}(0)=0$. In this case, we have that the corresponding equations \eqref{eq:ModeloSIRb1} and \eqref{eq:ModeloSIRb2} for $i=i'$ are satisfied by choosing $S_{i'}\equiv 0$ and $I_{i'}\equiv 0$;  thus, in addition, for the other values of $i\neq i'$ we can eliminate the term $\beta_{ii'}I_{i'}(t)$ of the sums in the equations \eqref{eq:ModeloSIRb1} and \eqref{eq:ModeloSIRb2}. That is, we can remove the functions $S_{i'}$ and $I_{i'}$ from the system of equations \eqref{eq:ModeloSIRb1}, \eqref{eq:ModeloSIRb2} and it will be the same as before but with $n-1$ populations. Solving it we obtaining functions $S_{i}$ and $I_i$, for $i\in\{1,2,\ldots,i'-1,i'+1,\ldots n\}$, by adding to these the functions $S_{i'}\equiv 0$ and $I_{i'}\equiv 0$, we obtain a solution of the initial system \eqref{eq:ModeloSIRb1}, \eqref{eq:ModeloSIRb2} with $n$ populations.
 
 Taking into account what we have mentioned above, we can assume from now on that $\mu>0$, or $\alpha>0$, or for all $i\in\{1,2,\ldots,n\}$ it is satisfied that $S_i(0)\neq 0$ or $I_i(0)\neq 0$.
@@ -299,14 +298,14 @@ $j\in\{1,2,\ldots,n\}$.  We have two cases.
 
 \emph{Case $t_0>0.$} In this situation we have that $S_i(t)>0$ and $I_i(t)>0$ for all $t\in (0,t_0)$ and every $i=1,2,\ldots,n$. Since $\boldsymbol{\beta}$ is an irreducible matrix we have that for every $i\in\{1,2,\ldots,n\}$ there exist $j_i$ such that $\beta_{i,j_i}>0$. Then $\Theta_i>0$ on $(0,t_0)$, which implies that the integrand in \eqref{eq:eq_integralI} is strictly positive on $(0,t_0)$. In a similar way we can conclude the same for the integrand in \eqref{eq:eq_integralR}. On the other hand the term $\nu N_i-\alpha I_i$ is also positive on $(0,t_0)$. Thus $S_j(t_0)>0$ and $I_j(t_0)>0$, which is a contradiction.
 
+\emph{Case $t_0=0.$}
 
 
-Suppose that $\mu>0$, as $S_i(0)\geq 0$ for every $i\in\{1,2,\ldots,n\}$ then, by formula \eqref{eq:eq_integralS}, we have that there exists $\delta_1>0$ such that $S_i(t)>0$ for all $t\in (0,\delta_1)$ and every $i\in\{1,2,\ldots,n\}$.  Defining the set $Q_1:=\{i\in\{1,2,\ldots,n\}:\beta_{i i_0}>0\}$, as the matrix  $\{\beta_{ij}\}$ is  irreducible, by Lemma \ref{lema:Psi.irredusible<-->Grafofuert.conectado}, we have that $Q_1\neq \emptyset$. For fixed $i\in Q_1$ we have that $\Theta_i(t)>0$ for all $t\in (0,\delta_i)$ with $\delta_i>0$, and thus $I_i(t)>0$ for all $t\in (0,\delta_i)$.  Considering, for $k\geq 2$, the set $Q_k:=\{i\in \{1,2,\ldots,n\}: i\notin \cup_{j=1}^{k-1}Q_j\ \text{and}\ \exists j_0\in Q_{k-1}\ | \beta_{i(k-1)}>0 \}$, reasoning as we did before, and through an induction process, we can see that if  $i\in Q_l$, for some $l$, then $I_i(t)>0$  for all $t\in (0,\delta_l)$ with $\delta_l>0$. As the matrix $\{\beta_{ij}\}$ is irreducible we have that for every $i\in \{1,2,\ldots,n\}$ there exist $l\in\mathbb{N}$ such that $i\in Q_l$. Thus we can assure that $I_i(t)>0$ for all $t\in (0,\tilde{\delta})$, with $\tilde{\delta}>0$, and every $i\in \{1,2,\ldots,n\}$. By the assertion in the previous paragraph  we have that $I_i(t)>0$ for every $t\in (0,+\infty)$ and  $i\in \{1,2,\ldots,n\}$.
+Suppose that $\mu>0$, then $\nu N_i-\alpha I_i(0)>0$, which implies that $\nu N_i-\alpha I_i(t)>0$ on $(0,\bar{\delta})$ for some $\bar{\delta}>0$. As $S_i(0)\geq 0$ for every $i\in\{1,2,\ldots,n\}$ then, by formula \eqref{eq:eq_integralS}, we have that  $S_i(t)>0$ for all $t\in (0,\delta_1)$ and every $i\in\{1,2,\ldots,n\}$.  Defining the set $Q_1:=\{i\in\{1,2,\ldots,n\}:\beta_{i i_0}>0\}$, as the matrix  $\{\beta_{ij}\}$ is  irreducible, by Lemma \ref{lema:Psi.irredusible<-->Grafofuert.conectado}, we have that $Q_1\neq \emptyset$. For fixed $i\in Q_1$ we have that $\Theta_i(t)>0$ for all $t\in (0,\delta_i)$ with $\delta_i>0$, and thus $I_i(t)>0$ for all $t\in (0,\delta_i)$.  Considering, for $k\geq 2$, the set $Q_k:=\{i\in \{1,2,\ldots,n\}: i\notin \cup_{j=1}^{k-1}Q_j\ \text{and}\ \exists j_0\in Q_{k-1}\ | \beta_{ij_0}>0 \}$, reasoning as we did before, and through an induction process, we can see that if  $i\in Q_l$, for some $l$, then $I_i(t)>0$  for all $t\in (0,\delta_l)$ with $\delta_l>0$. As the matrix $\{\beta_{ij}\}$ is irreducible we have that for every $i\in \{1,2,\ldots,n\}$ there exist $l\in\mathbb{N}$ such that $i\in Q_l$. Thus we can assure that $I_i(t)>0$ for all $t\in (0,\tilde{\delta})$, with $\tilde{\delta}>0$, and every $i\in \{1,2,\ldots,n\}$. Therefore, from the previous discussion,   $S_i(t)>0$ and $I_i(t)>0$ for all $t\in (0,\delta)$, for some $\delta>0$, and every $i\in \{1,2,\ldots,n\}$, which is a contradiction with the fact that $0=t_0=\inf A$.
 
-Let's suppose that $\alpha>0$. If $S_i(0)=0$ and $I_i(0)<N_i$ then, by formula \eqref{eq:eq_integralS} we have that $S_i(t)>0$ for $t\in (0,\delta)$, for some $\delta>0$.  If  $S_{i}(0))=0$ and $I_{i}(0)=N_i$ then also $S_i(t)>0$ for $t$ close to zero, since if  $S_i\leq 0$ near to zero then, by formula \eqref{eq:eq_integralI} we have that $I_i(t)<0$ for $t$ close to zero, which implies, by \eqref{eq:eq_integralS}, that $S_i>0$ near to zero, and this is an absurd. Therefore there exists $\delta>0$ such that $S_i(t)>0$ for all $t\in (0,\delta)$ and $i\in\{1,2,\ldots,n\}$. Now, reasoning as we did in the previous paragraph we have that $I_i(t)>0$ for $t$ close to zero and every $i=1,2,\ldots,n$. Thus, $I_i(t)>0$ for every $t\in (0,+\infty)$ and  $i\in \{1,2,\ldots,n\}$.
+Let's suppose that $\alpha>0$. If $S_i(0)=0$ and $I_i(0)<N_i$ then, by formula \eqref{eq:eq_integralS} we have that $S_i(t)>0$ for $t\in (0,\delta)$, for some $\delta>0$.  If  $S_{i}(0)=0$ and $I_{i}(0)=N_i$ then, by formula \eqref{eq:eq_integralR}, we have that $R_i(t)>0$ for $t$ close to zero, consequently $\nu N_i-\alpha I_i(t)>0$ near to zero.  Therefore there exists $\delta>0$ such that $S_i(t)>0$ for all $t\in (0,\delta)$ and $i\in\{1,2,\ldots,n\}$. Now, reasoning as we did in the previous paragraph we have that $I_i(t)>0$ for $t$ close to zero and every $i=1,2,\ldots,n$, and we can arrive to an absurd.  
 
-By last, suppose that for all $i\in\{1,2,\ldots,n\}$ it is satisfied that $S_i(0)\neq 0$ or $I_i(0)\neq 0$. Similarly to how we did in the previous paragraph we can see that $S_i(t)>0$ and $I_i(t)>0$ for $t$ close to zero, which implies that $I_i$ is a positive function in $(0,+\infty)$ for every $i\in\{1,2,\ldots,n\}$.
-
+By last, suppose that for all $i\in\{1,2,\ldots,n\}$ it is satisfied that $S_i(0)\neq 0$ or $I_i(0)\neq 0$. Similarly to how we did in the previous paragraph we can see that $S_i(t)>0$ and $I_i(t)>0$ for $t$ close to zero, and we can obtain an absurd.
 
 
 
@@ -353,28 +352,33 @@ By last, suppose that for all $i\in\{1,2,\ldots,n\}$ it is satisfied that $S_i(0
 
 \subsection{The number of vaccines  for  $t\to +\infty$}
 
-The goal of this section is to show that, in some sense, the total number of vaccinated individuals $u_iS_i$ for any $i$ approaches zero as $t\to+\infty$. This regardless of the vaccination campaign. A very aggressive campaign, so that the vaccination rate $u_i$ are high, will imply that the number of susceptible individuals converges to zero fast enough so that the total number of vaccinated $u_iS_i$ also tends to zero.
+In this section we will assume that the birth rate is equal to zero and the immunity period is infinite, i.e. $\mu=0$ and $\alpha=0$ respectively.
+The goal  is to show that, in some sense, the total number of vaccinated individuals $u_iS_i$ for any $i$ approaches to zero as $t\to+\infty$. This regardless of the vaccination campaign. For example, a very aggressive campaign, so that the vaccination rate $u_i$ are high, will imply that the number of susceptible individuals converges to zero fast enough so that the total number of vaccinated $u_iS_i$ also tends to zero.
 
-What we have actually shown is that certain regularizations of the functions $u_iS_i$ converge to zero at infinity. To state the result that we want to present, let us recall the concept of \emph{regularization} or \emph{approximation of identity}  \cite{EliasM.Stein120}. Let $\varphi$ be an  integrable function on $\mathbb{R}$ satisfying $\int_\mathbb{R}\varphi(t)dt=1$.  In this article we will only consider functions $\varphi$  with $\varphi(t)=0$ when $t\leq 0$ and $\varphi$ decreasing on $[0,+\infty)$. For $\gamma>0$, we set $\varphi_\gamma(t)=\gamma\varphi(\gamma t)$ and for any $f\in L^1(\mathbb{R})$ with $f(t)\equiv 0$ for $t<0$, we write
+What we have actually been able to prove is that certain regularizations of the functions $u_iS_i$ converge to zero at infinity. To state the result that we want to present, let us recall the concept of \emph{regularization} or \emph{approximation of identity}  \cite{EliasM.Stein120}. Let $\varphi$ be an  integrable function on $\mathbb{R}$ satisfying $\int_\mathbb{R}\varphi(t)dt=1$.  In this article we will only consider functions $\varphi$  with $\varphi(t)=0$ when $t\leq 0$ and $\varphi$ decreasing on $[0,+\infty)$. For $\gamma>0$, we set $\varphi_\gamma(t)=\gamma\varphi(\gamma t)$ and for any $f\in L^1(\mathbb{R})$ with $f(t)\equiv 0$ for $t<0$, we write
 \[
  f_{\gamma}(t)=f\ast \varphi_\gamma (t):= \gamma\int_{-\infty}^\infty f(t-s)\varphi(\gamma s)ds= \gamma\int_0^t f(t-s)\varphi(\gamma s)ds. 
 \]
 
-Then it is well known \cite{EliasM.Stein120} that $f_\gamma$ are continuous and  $f_\gamma\to f$  almost everywhere and in $L^p$-norm.  
+Then it is well known (see \cite{EliasM.Stein120})
+that $f_\gamma$ are continuous and  $f_\gamma\to f$  almost everywhere and in $L^p$-norm.  
 
- Suppose that $f\in L^\infty(\mathbb{R})$ and that there exists  $\lim_{t\to\infty}f(t)$.   Then, using the Lebesgue's dominated converge theorem 
+\begin{comentario}
+ Suppose that $f\in L^\infty(\mathbb{R})$ and that there exists  $\lim_{t\to\infty}f(t)$.   Then, using the Lebesgue's dominated converge theorem we obtain
 
  \begin{equation}\label{eq:lim-weak}
- \lim_{t\to\infty}f_\gamma(t) =\lim_{t\to\infty}f(t).
+ \lim_{t\to\infty}f_\gamma(t) =\lim_{t\to\infty}f(t),
 \end{equation}
+i.e,  regularization preserves the limit at infinity.
 
-
-\begin{comentario} Of course, the existence of the limit on the left hand side in equation \eqref{eq:lim-weak}   does not guarantee the existence of limit of $f(t)$ for $t\to\infty$. An example of this fact is shown uin appendix ?????.
+Nevertheless, the existence of the limit on the left hand side in equation \eqref{eq:lim-weak}   does not guarantee the existence of limit of $f(t)$ for $t\to\infty$. An example of this fact is shown in Appendix \ref{sec:apendice}.
 \end{comentario}
 
-The following proposition to expresses the fact that in the case when there are no demographic changes ($\mu=0$) and reinfections ($\alpha=0$) the  epidemic is extinguished when $t\to\infty$ and, in certain sense, the total quantity of applied vaccines $ u_iS_i$ goes to zero when $t\to\infty$.   
+The following proposition to expresses the fact that  the  epidemic is extinguished when $t\to\infty$ and, in certain sense, the total quantity of applied vaccines $ u_iS_i$ goes to zero when $t\to\infty$. 
 
-\begin{prop} We assume that $\mu=\alpha=0$ and  that $\varphi(t)=e^{-t}$, when $t>0$ and $\varphi(t)=0$ otherwise. The regularized function $(u_iS_i)_\gamma$ of the total number of appiled vaccines per unit of time goes to zero when $t\to\infty$. More concretely
+We recall that $\mu=\alpha=0$ and that  the infection period is given by the quantity $\gamma^{-1}$.   
+
+\begin{prop} We assume that $\varphi(t)=e^{-t}$, when $t>0$ and $\varphi(t)=0$ otherwise. The regularized function $(u_iS_i)_\gamma$  of the total number of applied vaccines at $i$th node  per unit of time goes to zero when $t\to\infty$. More concretely
 \[
  \lim\limits_{t\to\infty}\gamma\int_0^t  u_i(s)S_i(s)
   e^{\gamma (s-t)}ds=I_i(\infty)=0.
@@ -417,13 +421,6 @@ The proof is completed by taking limit for $t\to\infty$ in previous identities a
 \end{proof}
 
 
-\begin{conj} 
- \[
- \lim\limits_{t\to\infty}  u_i(s)S_i(s)
-=0.
-\]
-
-\end{conj}
 
 
 \section{Optimal control problem}
@@ -710,7 +707,7 @@ Suppose that there exists $k\notin F(t)$ such that $u_k^ \ast>0$
 ..........................
 
 
-\section{appendix}
+\section{appendix}\label{sec:apendice}
 
 
 
